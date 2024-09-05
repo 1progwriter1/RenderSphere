@@ -2,14 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "coor_sys.h"
 #include "vector.h"
+#include "clock.h"
 #include "window.h"
 
 int main()
 {
-    WindowData data( 800, 400);
+    WindowData data( 800, 600);
     CoordinateSys c_sys( 800, 600);
-
-    initClock();
 
     while ( data.window.isOpen() )
     {
@@ -20,10 +19,17 @@ int main()
                 data.window.close();
         }
 
-        updateClock();
+        sf::Vertex lines[6];
+        createArrows( lines, c_sys);
+
+        data.window.clear( sf::Color::Black);
+        data.window.draw(lines, 6, sf::Lines);
+        data.window.display();
+
+        //updateClock();
     }
 
-    destroyClock();
+    //destroyClock();
 
     return 0;
 }

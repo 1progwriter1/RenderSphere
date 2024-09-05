@@ -3,7 +3,7 @@
 #include <cstddef>
 
 WindowData::WindowData( unsigned int init_width, unsigned int init_height)
-    : window( sf::VideoMode( init_width, init_height), "Hello world"), pixels( sf::Points, init_width * init_height), data( 10)
+    : window( sf::VideoMode( init_width, init_height), "Hello world"), pixels( sf::Points, init_width * init_height)
 {
     height = init_height;
     width = init_width;
@@ -25,11 +25,7 @@ void drawVectors( WindowData *data, Vector vec)
         {
             sf::Vertex(sf::Vector2f(points.x_0, points.y_0)),
             sf::Vertex(sf::Vector2f(points.x, points.y))
-        }
+        };
     }
 }
 
-void addVector(WindowData *data, Vector vec)
-{
-    data->data.push_back( vec);
-}
