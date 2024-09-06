@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "coor_sys.h"
-#include "vector.h"
-#include "clock.h"
 #include "window.h"
 
 int main()
@@ -18,18 +17,10 @@ int main()
             if (event.type == sf::Event::Closed)
                 data.window.close();
         }
+        updateLines( &data, &c_sys);
 
-        sf::Vertex lines[6];
-        createArrows( lines, c_sys);
-
-        data.window.clear( sf::Color::Black);
-        data.window.draw(lines, 6, sf::Lines);
-        data.window.display();
-
-        //updateClock();
+        drawLines( &data);
     }
-
-    //destroyClock();
 
     return 0;
 }

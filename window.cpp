@@ -1,31 +1,32 @@
 #include "window.h"
-#include "vector.h"
 #include <cstddef>
+#include <vector>
 
 WindowData::WindowData( unsigned int init_width, unsigned int init_height)
-    : window( sf::VideoMode( init_width, init_height), "Hello world"), pixels( sf::Points, init_width * init_height)
+    : window( sf::VideoMode( init_width, init_height), "")
 {
     height = init_height;
     width = init_width;
+
+    lines = NULL;
+    num_of_lines = 0;
 }
 
 WindowData::~WindowData()
 {
     height = 0;
     width = 0;
+
+    if ( num_of_lines != 0 )
+    {
+        delete [] lines;
+    }
 }
 
-void drawVectors( WindowData *data, Vector vec)
+void drawLines( WindowData *data)
 {
-    for ( size_t i = 0; ; i++ )
-    {
-        Coordinates points = vec.getCoordinates();
-
-        sf::Vertex line[] =
-        {
-            sf::Vertex(sf::Vector2f(points.x_0, points.y_0)),
-            sf::Vertex(sf::Vector2f(points.x, points.y))
-        };
-    }
+    data->window.clear( sf::Color::Black);
+    data->window.draw( data->lines, data->num_of_lines, sf::Lines);
+    data->window.display();
 }
 

@@ -8,37 +8,41 @@
 #include <assert.h>
 #include <math.h>
 
-const double ARROW_LENGTH = 100;
+const double HOUR_ARROW_LENGTH = 60;
+const double MIN_ARROW_LENGTH = 100;
+const double SEC_ARROW_LENGTH = 100;
 
 struct CurrentTime
 {
-    size_t hours;
-    size_t minutes;
-    size_t seconds;
-};
-
-struct ArrowCoordinates
-{
-    int x;
-    int y;
+    int hours;
+    int minutes;
+    int seconds;
 };
 
 static CurrentTime getTime();
-static ArrowCoordinates timeToCoordinates( double part);
+static PointCoordinates timeToCoordinates( double part, const double length);
+static void createArrow( CoordinateSys *c_sys, double part, const double length) ;
 
-void createArrows( sf::Vertex lines[], CoordinateSys &sys)
+void updateClock( CoordinateSys *c_sys)
 {
+    assert( c_sys);
+
     CurrentTime time = getTime();
 
-    lines[0] = sf::Vertex( sf::Vector2f( sys.x_center, sys.y_center), sf::Color::Green);
-    ArrowCoordinates hours = timeToCoordinates( time.hours / 12.f);
-    lines[1] = sf::Vertex( sf::Vector2f( sys.x_center + hours.x, sys.y_center - hours.y), sf::Color::Green);
-    lines[2] = sf::Vertex( sf::Vector2f( sys.x_center, sys.y_center), sf::Color::Yellow);
-    ArrowCoordinates minutes = timeToCoordinates( time.minutes / 60.f);
-    lines[3] = sf::Vertex( sf::Vector2f( sys.x_center + minutes.x, sys.y_center - minutes.y), sf::Color::Yellow);
-    lines[4] = sf::Vertex( sf::Vector2f( sys.x_center, sys.y_center), sf::Color::White);
-    ArrowCoordinates seconds = timeToCoordinates( time.seconds / 60.f);
-    lines[5] = sf::Vertex( sf::Vector2f( sys.x_center + seconds.x, sys.y_center - seconds.y), sf::Color::White);
+    clearLines( c_sys);
+
+    createArrow( c_sys, time.hours / 12.f, HOUR_ARROW_LENGTH);
+    createArrow( c_sys, time.minutes / 60.f, MIN_ARROW_LENGTH);
+    createArrow( c_sys, time.seconds / 60.f, SEC_ARROW_LENGTH);
+}
+
+static void createArrow( CoordinateSys *c_sys, double part, const double length)
+{
+    PointCoordinates time = timeToCoordinates( part, length);
+    Vector arrow( time.x, time.y, 0, 0);
+    pushVector( c_sys, &arrow);
+
+    // addEnding( c_sys, &arrow);
 }
 
 static CurrentTime getTime()
@@ -51,15 +55,12 @@ static CurrentTime getTime()
     return time;
 }
 
-static ArrowCoordinates timeToCoordinates( double part)
+static PointCoordinates timeToCoordinates( double part, const double length)
 {
-
-    ArrowCoordinates arrow = {};
+    PointCoordinates arrow = {};
     double angle = (90 - part * 360) * M_PI / 180.f;
-    arrow.x = int( std::round( std::cos( angle) * ARROW_LENGTH));
-    arrow.y = int( std::round( std::sin( angle) * ARROW_LENGTH));
+    arrow.x = int( std::round( std::cos( angle) * length));
+    arrow.y = int( std::round( std::sin( angle) * length));
 
     return arrow;
 }
-
-
