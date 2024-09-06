@@ -1,7 +1,7 @@
 #ifndef COORDINATE_SYSTEM_FUNCTIONS
 #define COORDINATE_SYSTEM_FUNCTIONS
 
-#include "window.h"
+#include "graphlib.h"
 #include <vector>
 
 struct PointCoordinates

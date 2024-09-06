@@ -1,8 +1,9 @@
+#include <cstdio>
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "coor_sys.h"
-#include "window.h"
+#include "graphlib.h"
 
 int main()
 {

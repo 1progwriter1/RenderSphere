@@ -31,9 +31,9 @@ void updateClock( CoordinateSys *c_sys)
 
     clearLines( c_sys);
 
-    createArrow( c_sys, time.hours / 12.f, HOUR_ARROW_LENGTH);
-    createArrow( c_sys, time.minutes / 60.f, MIN_ARROW_LENGTH);
-    createArrow( c_sys, time.seconds / 60.f, SEC_ARROW_LENGTH);
+    createArrow( c_sys, time.hours   / 12.f, HOUR_ARROW_LENGTH);
+    createArrow( c_sys, time.minutes / 60.f,  MIN_ARROW_LENGTH);
+    createArrow( c_sys, time.seconds / 60.f,  SEC_ARROW_LENGTH);
 }
 
 static void createArrow( CoordinateSys *c_sys, double part, const double length)
@@ -42,7 +42,7 @@ static void createArrow( CoordinateSys *c_sys, double part, const double length)
     Vector arrow( time.x, time.y, 0, 0);
     pushVector( c_sys, &arrow);
 
-    // addEnding( c_sys, &arrow);
+    addEnding( c_sys, &arrow);
 }
 
 static CurrentTime getTime()

@@ -5,7 +5,7 @@
 #include <cmath>
 
 const double EPSILON = 1e-6;
-const double ENDING_SIZE_CF = 5.f;
+const double ENDING_SIZE_CF = 10.f;
 
 Vector::Vector( int x, int y, int x_0, int y_0)
 {
@@ -25,18 +25,21 @@ Coordinates Vector::getCoordinates()
 
 Vector Vector::addVector( Vector vec)
 {
-    vec.x += x - vec.x_0;
-    vec.y += y - vec.y_0;
+    vec.x += x_0 - vec.x_0;
+    vec.y += y_0 - vec.y_0;
 
-    return Vector( x + vec.x, y + vec.y, x_0, y_0);
+    assert( x_0 == vec.x_0);
+    assert( y_0 == vec.y_0);
+
+    return Vector( x + vec.x - vec.x_0, y + vec.y - vec.y_0, x_0, y_0);
 }
 
 Vector Vector::divide( double cf)
 {
     assert( std::fabs( cf) >= EPSILON);
 
-    x = int( std::round( x / cf));
-    y = int( std::round( y / cf));
+    x = x_0 + int( std::round( (x - x_0) / cf));
+    y = y_0 + int( std::round( (y - y_0) / cf));
 
     return *this;
 }
@@ -65,19 +68,36 @@ void addEnding( CoordinateSys *c_sys, Vector *vec)
     assert( c_sys->lines.size() > 0 );
 
     Coordinates vec_c = vec->getCoordinates();
-    double length = vec->getLength() / ENDING_SIZE_CF;
 
-    Vector reversed( vec_c.x_0, vec_c.y_0, vec_c.x, vec_c.y_0);
-    reversed.setLength( length);
-    Vector perpendicular_1( -vec_c.y, vec_c.x, vec_c.x_0, vec_c.y_0);
-    perpendicular_1.setLength( length);
+    Vector reversed = (~(*vec)).divide( ENDING_SIZE_CF);
 
-    Vector part = perpendicular_1.addVector( reversed);
+    Vector perpendicular = vec->getPerpendicular().move( vec_c.x, vec_c.y).divide( ENDING_SIZE_CF);
+    Vector part = perpendicular.addVector( reversed);
     pushVector( c_sys, &part);
 
-    Vector perpendicular_2( vec_c.y, -vec_c.x, vec_c.x_0, vec_c.y_0);
-    perpendicular_2.setLength( length);
-
-    part = perpendicular_2.addVector( reversed);
+    perpendicular = (~perpendicular).move( vec_c.x, vec_c.y);
+    part = perpendicular.addVector( reversed);
     pushVector( c_sys, &part);
+}
+
+Vector Vector::operator ~()
+{
+    return Vector( x_0, y_0, x, y);
+}
+
+Vector Vector::move( int new_x_0, int new_y_0)
+{
+    x += new_x_0 - x_0;
+    y += new_y_0 - y_0;
+    x_0 = new_x_0;
+    y_0 = new_y_0;
+
+    return *this;
+}
+
+Vector Vector::getPerpendicular()
+{
+    int vec_x = x_0 + y_0 - y;
+    int vec_y = -(y_0 + x_0 - x);
+    return Vector (vec_x, vec_y, x_0, y_0);
 }
