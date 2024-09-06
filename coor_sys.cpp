@@ -6,12 +6,13 @@
 #include <sys/_types/_suseconds_t.h>
 #include <sys/errno.h>
 #include "../MyLibraries/headers/systemdata.h"
+#include "graphlib.h"
 #include "vector.h"
 #include "clock.h"
 
 static int getX( CoordinateSys *c_sys, size_t index);
 static int getY( CoordinateSys *c_sys, size_t index);
-static int checkMemory( WindowData *data, size_t num_of_vec);
+static int checkMemory( GraphWindow *data, size_t num_of_vec);
 
 CoordinateSys::CoordinateSys( int w_width, int w_height)
 {
@@ -19,22 +20,22 @@ CoordinateSys::CoordinateSys( int w_width, int w_height)
     y_center = w_height / 2;
 }
 
-void updateLines( WindowData *data, CoordinateSys *c_sys)
+void updateLines( GraphWindow *data, CoordinateSys *c_sys)
 {
     assert( data);
     assert( c_sys);
 
     updateClock( c_sys);
 
-    size_t num_of_vec = c_sys->lines.size();
-    if ( checkMemory( data, num_of_vec) != SUCCESS )
-    {
-        return;
-    }
-    for ( size_t i = 0; i < num_of_vec; i++ )
-    {
-        data->lines[i] = sf::Vertex( sf::Vector2f( getX( c_sys, i), getY( c_sys, i)));
-    }
+    // size_t num_of_vec = c_sys->lines.size();
+    // if ( checkMemory( data, num_of_vec) != SUCCESS )
+    // {
+    //     return;
+    // }
+    // for ( size_t i = 0; i < num_of_vec; i++ )
+    // {
+    //     data->lines[i] = sf::Vertex( sf::Vector2f( getX( c_sys, i), getY( c_sys, i)));
+    // }
 }
 
 static int getX( CoordinateSys *c_sys, size_t index)
@@ -55,22 +56,22 @@ static int getY( CoordinateSys *c_sys, size_t index)
     return vec.y;
 }
 
-static int checkMemory( WindowData *data, size_t num_of_vec)
+static int checkMemory( GraphWindow *data, size_t num_of_vec)
 {
     assert( data);
 
-    if ( data->num_of_lines != num_of_vec )
-    {
-        if ( data->num_of_lines != 0 )
-            delete [] data->lines;
-        data->lines = new sf::Vertex[num_of_vec];
-        data->num_of_lines = num_of_vec;
-        if ( !data->lines )
-        {
-            printf( RED "error: " END_OF_COLOR "failed to update lines\n");
-            return ERROR;
-        }
-    }
+    // if ( data->num_of_lines != num_of_vec )
+    // {
+    //     if ( data->num_of_lines != 0 )
+    //         delete [] data->lines;
+    //     data->lines = new sf::Vertex[num_of_vec];
+    //     data->num_of_lines = num_of_vec;
+    //     if ( !data->lines )
+    //     {
+    //         printf( RED "error: " END_OF_COLOR "failed to update lines\n");
+    //         return ERROR;
+    //     }
+    // }
 
     return SUCCESS;
 }

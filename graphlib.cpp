@@ -1,32 +1,34 @@
 #include "graphlib.h"
 #include <cstddef>
 #include <vector>
+#include <assert.h>
 
-WindowData::WindowData( unsigned int init_width, unsigned int init_height)
-    : window( sf::VideoMode( init_width, init_height), "")
+GraphWindow::GraphWindow( unsigned int init_width, unsigned int init_height, const char *label)
+    : window_( sf::VideoMode( init_width, init_height), label)
 {
-    height = init_height;
-    width = init_width;
-
-    lines = NULL;
-    num_of_lines = 0;
+    height_ = init_height;
+    width_ = init_width;
 }
 
-WindowData::~WindowData()
+GraphWindow::~GraphWindow()
 {
-    height = 0;
-    width = 0;
-
-    if ( num_of_lines != 0 )
-    {
-        delete [] lines;
-    }
+    height_ = 0;
+    width_ = 0;
 }
 
-void drawLines( WindowData *data)
+void GraphWindow::drawLines( sf::Vertex *lines, size_t size)
 {
-    data->window.clear( sf::Color::Black);
-    data->window.draw( data->lines, data->num_of_lines, sf::Lines);
-    data->window.display();
+    assert( lines);
+
+    window_.clear( sf::Color::Black);
+    window_.draw( lines, size, sf::Lines);
+    window_.display();
+}
+
+void GraphWindow::drawPixels( sf::VertexArray &pixels)
+{
+    window_.clear( sf::Color::Black);
+    window_.draw( pixels);
+    window_.display();
 }
 

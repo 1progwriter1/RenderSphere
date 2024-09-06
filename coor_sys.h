@@ -21,7 +21,7 @@ struct CoordinateSys
 
 #include "vector.h"
 
-void updateLines( WindowData *data, CoordinateSys *c_sys);
+void updateLines( GraphWindow *data, CoordinateSys *c_sys);
 void pushVector( CoordinateSys *c_sys, Vector *vec);
 void clearLines( CoordinateSys *c_sys);
 

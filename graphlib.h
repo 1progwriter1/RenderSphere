@@ -1,24 +1,23 @@
-#ifndef WINDOW_FUNCTIONS
-#define WINDOW_FUNCTIONS
+#ifndef GRAPH_LIB_FUNCTIONS
+#define GRAPH_LIB_FUNCTIONS
 
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>
 
-struct WindowData : public sf::Window
+class GraphWindow : public sf::Window
 {
-    sf::RenderWindow window;
-    sf::VertexArray pixels;
-    unsigned int height;
-    unsigned int width;
+public:
+    sf::RenderWindow window_;
 
-    sf::Vertex *lines;
-    size_t num_of_lines;
+    unsigned int height_;
+    unsigned int width_;
 
-    WindowData( unsigned int init_width, unsigned init_height);
-    ~WindowData();
+public:
+    GraphWindow( unsigned int init_width, unsigned init_height, const char *label = "hello");
+    ~GraphWindow();
+    void drawLines( sf::Vertex *line, size_t size);
+    void drawPixels( sf::VertexArray &pixels);
 };
 
-void drawLines( WindowData *data);
-
-#endif // WINDOW_FUNCTIONS
+#endif // GRAPH_LIB_FUNCTIONS
