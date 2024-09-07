@@ -17,7 +17,7 @@ private:
 public:
     Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height);
     ~Sphere();
-    void setPixels( sf::Color inside = sf::Color::Red, sf::Color outside = sf::Color(0, 255, 0, 12));
+    void setPixels( sf::Color inside = sf::Color::Red, sf::Color outside = sf::Color::Green);
 
 private:
     bool isInside( int x, int y);

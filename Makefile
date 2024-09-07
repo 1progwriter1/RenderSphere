@@ -10,7 +10,7 @@ SFML=-lsfml-graphics -lsfml-window -lsfml-system
 INCLUDE=-I/opt/homebrew/include/
 LINK=-L/opt/homebrew/lib
 
-SOURCES=$(wildcard *.cpp)
+SOURCES=$(wildcard src/*.cpp)
 
 COMP=g++
 

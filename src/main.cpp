@@ -10,12 +10,8 @@ int main()
 {
     GraphWindow window( 800, 600);
     Sphere sphere( 200, 800, 600);
-    sphere.setPixels( sf::Color::White, sf::Color::White);
+    sphere.setPixels();
 
-    std::vector<float> vec;
-    for (const int& i : vec) {
-
-    }
     while ( window.window_.isOpen() )
     {
         sf::Event event;

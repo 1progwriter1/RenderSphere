@@ -6,7 +6,7 @@ Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int 
     : pixels_( sf::Points, init_width * init_height)
 {
     radius_ = init_radius;
-    width_ = init_width;
+    width_  = init_width;
     height_ = init_height;
 
     length_ = width_ * height_;
@@ -15,7 +15,7 @@ Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int 
 Sphere::~Sphere()
 {
     radius_ = 0;
-    width_ = 0;
+    width_  = 0;
     height_ = 0;
     length_ = 0;
 }
@@ -35,7 +35,7 @@ void Sphere::setPixels( sf::Color inside, sf::Color outside)
 
 bool Sphere::isInside( int x, int y)
 {
-    x -= width_ / 2;
+    x -= width_  / 2;
     y -= height_ / 2;
 
     return pow( x, 2) + pow( y, 2) <= pow( radius_, 2);
