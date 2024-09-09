@@ -14,15 +14,16 @@ struct CurrentTime
 
 class Clock
 {
+public:
     sf::Vertex *lines;
-    size_t cur_index;
+    const size_t NUMBER_OF_POINTS = 18;
 
+private:
+    size_t cur_index;
     int x_center_;
     int y_center_;
     int long_arrow_len_;
 
-    const size_t NUMBER_OF_POINTS = 18;
-    const double ENDING_LEN_COE   = 10.f;
     const double ARROW_LENGTH_COE = 5.f / 3.f;
 
 public:
@@ -34,7 +35,7 @@ private:
     CurrentTime getTime();
     PointCoordinates timeToCoordinates( double part, const double length);
     void createArrow( CoordinateSys *c_sys, double part, const double length);
-    void pushArrow( PointCoordinates start, PointCoordinates end);
+    void pushArrow( CoordinateSys *c_sys, PointCoordinates start, PointCoordinates end);
     void pushLine( PointCoordinates point_1, PointCoordinates point_2);
 };
 

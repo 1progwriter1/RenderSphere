@@ -1,5 +1,4 @@
 #include "vector.h"
-#include "coor_sys.h"
 #include <cassert>
 #include <chrono>
 #include <cmath>
@@ -59,24 +58,22 @@ void Vector::setLength( double new_length)
     double cur_length = getLength();
     x = int( std::round( x / cur_length * new_length));
     y = int( std::round( y / cur_length * new_length));
-} // shadow
+}
 
-void addEnding( CoordinateSys *c_sys, Vector *vec)
+void Vector::createEnding( Coordinates *end_1, Coordinates *end_2)
 {
-    assert( vec );
-    assert( c_sys->lines.size() > 0 );
+    assert( end_1);
+    assert( end_2);
 
-    Coordinates vec_c = vec->getCoordinates();
+    Vector reversed = (~(*this)).divide( ENDING_SIZE_CF);
 
-    Vector reversed = (~(*vec)).divide( ENDING_SIZE_CF);
-
-    Vector perpendicular = vec->getPerpendicular().move( vec_c.x, vec_c.y).divide( ENDING_SIZE_CF);
+    Vector perpendicular = this->getPerpendicular().move( this->x, this->y).divide( ENDING_SIZE_CF);
     Vector part = perpendicular.addVector( reversed);
-    pushVector( c_sys, &part);
+    *end_1 = part.getCoordinates();
 
-    perpendicular = (~perpendicular).move( vec_c.x, vec_c.y);
+    perpendicular = (~perpendicular).move( this->x, this->y);
     part = perpendicular.addVector( reversed);
-    pushVector( c_sys, &part);
+    *end_2 = part.getCoordinates();
 }
 
 Vector Vector::operator ~()

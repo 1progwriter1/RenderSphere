@@ -43,10 +43,8 @@ void Clock::updateClock( CoordinateSys *c_sys)
 void Clock::createArrow( CoordinateSys *c_sys, double part, const double length)
 {
     PointCoordinates time = timeToCoordinates( part, length);
-    Vector arrow( time.x, time.y, 0, 0);
-    pushVector( c_sys, &arrow);
 
-    addEnding( c_sys, &arrow);
+    pushArrow( c_sys, {x_center_, y_center_} ,{time.x + x_center_, time.y + y_center_});
 }
 
 CurrentTime Clock::getTime()
@@ -69,16 +67,27 @@ PointCoordinates Clock::timeToCoordinates( double part, const double length)
     return arrow;
 }
 
-void Clock::pushArrow( int start, int end)
+void Clock::pushArrow( CoordinateSys *c_sys, PointCoordinates start, PointCoordinates end)
 {
-    pushLine( start, end);
+    assert( c_sys);
 
+    Vector arrow( end.x, end.y, start.x, start.y);
+    Coordinates vec = arrow.getCoordinates();
 
+    Coordinates end_1 = {}, end_2 = {};
+    arrow.createEnding( &end_1, &end_2);
+
+    pushLine( c_sys->translateToPixels( {vec.x_0, vec.y_0}),
+                c_sys->translateToPixels( {vec.x, vec.y}));
+    pushLine( c_sys->translateToPixels( {end_1.x_0, end_1.y_0}),
+                c_sys->translateToPixels( {end_1.x, end_1.y}));
+    pushLine( c_sys->translateToPixels( {end_2.x_0, end_2.y_0}),
+                c_sys->translateToPixels( {end_2.x, end_2.y}));
 }
 
 void Clock::pushLine( PointCoordinates point_1, PointCoordinates point_2)
 {
-    assert( cur_index >= NUMBER_OF_POINTS );
+    assert( cur_index < NUMBER_OF_POINTS );
 
     lines[cur_index++] = sf::Vector2f( point_1.x, point_1.y);
     lines[cur_index++] = sf::Vector2f( point_2.x, point_2.y);

@@ -21,6 +21,8 @@ class Vector
 
 public:
     Vector( int x, int y, int x_0, int y_0);
+    ~Vector() {};
+
     Coordinates getCoordinates();
     Vector addVector( Vector vec);
     Vector divide( double cf);
@@ -29,10 +31,7 @@ public:
     void setLength( double new_length);
     Vector getPerpendicular();
     Vector operator ~();
+    void createEnding( Coordinates *end_1, Coordinates *end_2);
 };
-
-#include "coor_sys.h"
-
-void addEnding( CoordinateSys *c_sys, Vector *vec);
 
 #endif // DRAW_VECTOR_FUNCTIONS

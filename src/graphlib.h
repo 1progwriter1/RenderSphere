@@ -1,14 +1,16 @@
 #ifndef GRAPH_LIB_FUNCTIONS
 #define GRAPH_LIB_FUNCTIONS
 
+#include "coor_sys.h"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>
 
-class GraphWindow : public sf::Window
+class GraphWindow
 {
 public:
     sf::RenderWindow window_;
+    CoordinateSys c_sys_;
 
     unsigned int height_;
     unsigned int width_;
