@@ -8,35 +8,39 @@
 #include <assert.h>
 #include <math.h>
 
-const double HOUR_ARROW_LENGTH = 60;
-const double MIN_ARROW_LENGTH = 100;
-const double SEC_ARROW_LENGTH = 100;
-
-struct CurrentTime
+Clock::Clock( int init_arrow_length, int init_x_center, int init_y_center)
 {
-    int hours;
-    int minutes;
-    int seconds;
-};
+    long_arrow_len_ = init_arrow_length;
+    x_center_ = init_x_center;
+    y_center_ = init_y_center;
 
-static CurrentTime getTime();
-static PointCoordinates timeToCoordinates( double part, const double length);
-static void createArrow( CoordinateSys *c_sys, double part, const double length) ;
+    cur_index = 0;
 
-void updateClock( CoordinateSys *c_sys)
+    lines = new sf::Vertex[NUMBER_OF_POINTS];
+}
+
+Clock::~Clock()
+{
+    delete [] lines;
+
+    long_arrow_len_ = 0;
+    x_center_ = 0;
+    y_center_ = 0;
+}
+
+void Clock::updateClock( CoordinateSys *c_sys)
 {
     assert( c_sys);
 
     CurrentTime time = getTime();
+    cur_index = 0;
 
-    clearLines( c_sys);
-
-    createArrow( c_sys, time.hours   / 12.f, HOUR_ARROW_LENGTH);
-    createArrow( c_sys, time.minutes / 60.f,  MIN_ARROW_LENGTH);
-    createArrow( c_sys, time.seconds / 60.f,  SEC_ARROW_LENGTH);
+    createArrow( c_sys, time.hours   / 12.f, long_arrow_len_ / ARROW_LENGTH_COE);
+    createArrow( c_sys, time.minutes / 60.f,  long_arrow_len_);
+    createArrow( c_sys, time.seconds / 60.f,  long_arrow_len_);
 }
 
-static void createArrow( CoordinateSys *c_sys, double part, const double length)
+void Clock::createArrow( CoordinateSys *c_sys, double part, const double length)
 {
     PointCoordinates time = timeToCoordinates( part, length);
     Vector arrow( time.x, time.y, 0, 0);
@@ -45,7 +49,7 @@ static void createArrow( CoordinateSys *c_sys, double part, const double length)
     addEnding( c_sys, &arrow);
 }
 
-static CurrentTime getTime()
+CurrentTime Clock::getTime()
 {
     std::time_t elapsed_time = std::time( nullptr);
 
@@ -55,7 +59,7 @@ static CurrentTime getTime()
     return time;
 }
 
-static PointCoordinates timeToCoordinates( double part, const double length)
+PointCoordinates Clock::timeToCoordinates( double part, const double length)
 {
     PointCoordinates arrow = {};
     double angle = (90 - part * 360) * M_PI / 180.f;
@@ -63,4 +67,19 @@ static PointCoordinates timeToCoordinates( double part, const double length)
     arrow.y = int( std::round( std::sin( angle) * length));
 
     return arrow;
+}
+
+void Clock::pushArrow( int start, int end)
+{
+    pushLine( start, end);
+
+
+}
+
+void Clock::pushLine( PointCoordinates point_1, PointCoordinates point_2)
+{
+    assert( cur_index >= NUMBER_OF_POINTS );
+
+    lines[cur_index++] = sf::Vector2f( point_1.x, point_1.y);
+    lines[cur_index++] = sf::Vector2f( point_2.x, point_2.y);
 }

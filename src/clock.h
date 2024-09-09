@@ -3,20 +3,40 @@
 
 #include "coor_sys.h"
 #include <SFML/Graphics.hpp>
+#include <cstddef>
 
-class Clock : sf::Vertex
+struct CurrentTime
 {
-    sf::Vertex lines;
+    int hours;
+    int minutes;
+    int seconds;
+};
+
+class Clock
+{
+    sf::Vertex *lines;
+    size_t cur_index;
 
     int x_center_;
     int y_center_;
-    int sec_arrow_len_;
+    int long_arrow_len_;
+
+    const size_t NUMBER_OF_POINTS = 18;
+    const double ENDING_LEN_COE   = 10.f;
+    const double ARROW_LENGTH_COE = 5.f / 3.f;
 
 public:
     Clock( int init_arrow_length, int init_x_center = 0, int init_y_center = 0);
     ~Clock();
+    void updateClock( CoordinateSys *c_sys);
+
+private:
+    CurrentTime getTime();
+    PointCoordinates timeToCoordinates( double part, const double length);
+    void createArrow( CoordinateSys *c_sys, double part, const double length);
+    void pushArrow( PointCoordinates start, PointCoordinates end);
+    void pushLine( PointCoordinates point_1, PointCoordinates point_2);
 };
 
-void updateClock( CoordinateSys *c_sys);
 
 #endif // VECTOR_CLOCK

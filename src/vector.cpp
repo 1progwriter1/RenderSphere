@@ -19,8 +19,7 @@ Vector::Vector( int x, int y, int x_0, int y_0)
 
 Coordinates Vector::getCoordinates()
 {
-    Coordinates tmp = {x, y, x_0, y_0};
-    return tmp; // c++11 extension
+    return {x, y, x_0, y_0};
 }
 
 Vector Vector::addVector( Vector vec)
