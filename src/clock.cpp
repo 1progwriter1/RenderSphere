@@ -94,9 +94,9 @@ void Clock::pushArrow( CoordinateSys *c_sys, PointCoordinates start, PointCoordi
     assert( c_sys);
 
     Vector arrow( end.x, end.y, start.x, start.y);
-    Coordinates vec = arrow.getCoordinates();
+    VectorCoordinates vec = arrow.getCoordinates();
 
-    Coordinates end_1 = {}, end_2 = {};
+    VectorCoordinates end_1 = {}, end_2 = {};
     arrow.createEnding( &end_1, &end_2);
 
     pushLine( c_sys->translateToPixels( {vec.x_0, vec.y_0}),
