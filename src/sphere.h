@@ -17,10 +17,11 @@ private:
 public:
     Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height);
     ~Sphere();
-    void setPixels( sf::Color inside = sf::Color::Red, sf::Color outside = sf::Color::Green);
+    void setPixels();
 
 private:
     bool isInside( int x, int y);
+    sf::Color zColor( int x, int y);
 };
 
 #endif // SPHERE_DRAW_FUNCTIONS

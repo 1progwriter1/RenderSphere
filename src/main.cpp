@@ -1,32 +1,30 @@
-#include <cstdio>
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "clock.h"
-#include "coor_sys.h"
 #include "graphlib.h"
+#include "sphere.h"
 
-int main()
+#include "../../MyLibraries/headers/systemdata.h"
+
+int main( const int argc, const char *argv[])
 {
-//     GraphWindow window( 800, 600);
-//     Sphere sphere( 200, 800, 600);
-//     sphere.setPixels();
-//
-//     while ( window.window_.isOpen() )
-//     {
-//         sf::Event event;
-//         while ( window.window_.pollEvent( event) )
-//         {
-//             if ( event.type == sf::Event::Closed )
-//             {
-//                 window.window_.close();
-//             }
-//         }
-//
-//         window.drawPixels( sphere.pixels_);
-//     }
+    if ( argc > 1 )
+    {
+        if ( strcmp( argv[1], "--clock") == 0 )
+        {
+            drawClock();
+        } else
+        {
+            printf( RED "error: " END_OF_COLOR "unknow flag: \"%s\"\n", argv[1]);
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+
     GraphWindow window( 800, 600);
-    Clock clock( 100);
+    Sphere sphere( 200, 800, 600);
+    sphere.setPixels();
 
     while ( window.window_.isOpen() )
     {
@@ -38,12 +36,11 @@ int main()
                 window.window_.close();
             }
         }
-        clock.updateClock( &window.c_sys_);
 
-        window.drawLines( clock.lines, clock.NUMBER_OF_POINTS);
+        window.drawPixels( sphere.pixels_);
     }
 
-    return 0;
+    return SUCCESS;
 }
 
 

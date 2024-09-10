@@ -1,12 +1,34 @@
 #include "clock.h"
 #include "coor_sys.h"
 #include "vector.h"
+#include "graphlib.h"
 #include <cmath>
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
 #include <assert.h>
 #include <math.h>
+
+void drawClock()
+{
+    GraphWindow window( WINDOW_WIDTH, WINDOW_HEIGHT);
+    Clock clock( ARROW_LENGTH);
+
+    while ( window.window_.isOpen() )
+    {
+        sf::Event event;
+        while ( window.window_.pollEvent( event) )
+        {
+            if ( event.type == sf::Event::Closed )
+            {
+                window.window_.close();
+            }
+        }
+        clock.updateClock( &window.c_sys_);
+
+        window.drawLines( clock.lines, clock.NUMBER_OF_POINTS);
+    }
+}
 
 Clock::Clock( int init_arrow_length, int init_x_center, int init_y_center)
 {

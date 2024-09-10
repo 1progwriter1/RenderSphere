@@ -1,4 +1,5 @@
 #include "sphere.h"
+#include <cassert>
 #include <cmath>
 #include <cstddef>
 
@@ -20,7 +21,7 @@ Sphere::~Sphere()
     length_ = 0;
 }
 
-void Sphere::setPixels( sf::Color inside, sf::Color outside)
+void Sphere::setPixels()
 {
     for ( size_t y = 0; y < height_; y++ )
     {
@@ -28,9 +29,26 @@ void Sphere::setPixels( sf::Color inside, sf::Color outside)
         {
             size_t index = y * width_ + x;
             pixels_[index].position = sf::Vector2f( float( x), float( y));
-            pixels_[index].color = isInside( int( x), int( y)) ? inside : outside;
+            sf::Color color;
+            if ( isInside( int( x), int(y )) )
+            {
+                color = zColor( int( x), int( y));
+            } else
+            {
+                color = sf::Color( 0, 100, 0, 255);
+            }
+            pixels_[index].color = color;
         }
     }
+}
+
+sf::Color Sphere::zColor( int x, int y)
+{
+    x -= width_  / 2;
+    y -= height_ / 2;
+    double part = sqrt( pow( x, 2) + pow( y, 2)) / radius_;
+
+    return sf::Color( uint8_t( 255 - 255 * part), 0, 0, 255);
 }
 
 bool Sphere::isInside( int x, int y)

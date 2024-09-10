@@ -5,6 +5,10 @@
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 
+const int WINDOW_HEIGHT = 600;
+const int WINDOW_WIDTH = 800;
+const int ARROW_LENGTH = 100;
+
 struct CurrentTime
 {
     int hours;
@@ -39,5 +43,6 @@ private:
     void pushLine( PointCoordinates point_1, PointCoordinates point_2);
 };
 
+void drawClock();
 
 #endif // VECTOR_CLOCK
