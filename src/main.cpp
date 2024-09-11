@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "clock.h"
-#include "graphlib.h"
-#include "sphere.h"
+#include "clock.hpp"
+#include "graphlib.hpp"
+#include "sphere.hpp"
 
 #include "../../MyLibraries/headers/systemdata.h"
+
+const unsigned int W_HEIGHT = 900;
+const unsigned int W_WIDTH = 1400;
+const unsigned int INIT_RADIUS = 200;
 
 int main( const int argc, const char *argv[])
 {
@@ -22,8 +26,8 @@ int main( const int argc, const char *argv[])
         return SUCCESS;
     }
 
-    GraphWindow window( 800, 600);
-    Sphere sphere( 200, 800, 600);
+    GraphWindow window( W_WIDTH, W_HEIGHT);
+    Sphere sphere( INIT_RADIUS, W_WIDTH, W_HEIGHT);
 
     while ( window.window_.isOpen() )
     {

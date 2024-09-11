@@ -1,6 +1,7 @@
-#include "graphlib.h"
-#include "coor_sys.h"
+#include "graphlib.hpp"
+#include "coor_sys.hpp"
 #include <cstddef>
+#include <sys/_types/_size_t.h>
 #include <vector>
 #include <assert.h>
 
@@ -33,3 +34,11 @@ void GraphWindow::drawPixels( sf::VertexArray &pixels)
     window_.display();
 }
 
+void GraphWindow::drawSprites( std::vector<sf::Sprite> &sprites)
+{
+    size_t number = sprites.size();
+    for ( size_t i = 0; i < number; i++ )
+    {
+        window_.draw( sprites.data()[i]);
+    }
+}

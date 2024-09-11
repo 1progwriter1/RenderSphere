@@ -1,6 +1,6 @@
-#include "sphere.h"
-#include "coor_sys.h"
-#include "vector.h"
+#include "sphere.hpp"
+#include "coor_sys.hpp"
+#include "vector.hpp"
 #include <_types/_uint8_t.h>
 #include <cassert>
 #include <cinttypes>
@@ -22,10 +22,10 @@ Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int 
     height_ = init_height;
 
     light_.push_back( { 10, -150, 250, sf::Color( 150, 0, 0, 255), sf::Color( 255, 102, 102, 255)});
-    light_.push_back( {-300, 0, 0, sf::Color( 0, 150, 0, 255), sf::Color( 0, 255, 128, 255)});
+    light_.push_back( {-400, 0, 0, sf::Color( 0, 150, 0, 255), sf::Color( 0, 255, 128, 255)});
     light_.push_back( {500, 500, 500, sf::Color( 255, 255, 153, 150), sf::Color( 255, 255, 204, 100)});
 
-    view_pos_ = { 0, 0, 500};
+    view_pos_ = { 500, 500, -300};
 }
 
 Sphere::~Sphere()
@@ -88,7 +88,7 @@ sf::Color getColor( const Sphere &sphere, const PointCoordinates &point)
     }
     sf::Color color = DEFAULT_COLOR;
     color = color + getLambertColor( sphere, point);
-    color = color + getBlick( sphere, point);
+    // color = color + getBlick( sphere, point);
 
     return color;
 }
@@ -100,6 +100,7 @@ sf::Color getLambertColor( const Sphere &sphere, const PointCoordinates &point)
 
     int z_c = sphere.getZOnSphere( point);
     Vector normal( point.x, point.y, 0, 0, z_c, 0);
+
 
     size_t num_of_lights = lightData.size();
     for ( size_t i = 0; i < num_of_lights; i++ )

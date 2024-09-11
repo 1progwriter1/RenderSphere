@@ -1,7 +1,7 @@
 #ifndef VECTOR_CLOCK
 #define VECTOR_CLOCK
 
-#include "coor_sys.h"
+#include "coor_sys.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 

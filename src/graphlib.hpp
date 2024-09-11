@@ -1,7 +1,7 @@
 #ifndef GRAPH_LIB_FUNCTIONS
 #define GRAPH_LIB_FUNCTIONS
 
-#include "coor_sys.h"
+#include "coor_sys.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>
@@ -20,6 +20,7 @@ public:
     ~GraphWindow();
     void drawLines( sf::Vertex *line, size_t size);
     void drawPixels( sf::VertexArray &pixels);
+    void drawSprites( std::vector<sf::Sprite> &sprites);
 };
 
 #endif // GRAPH_LIB_FUNCTIONS

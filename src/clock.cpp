@@ -1,13 +1,13 @@
-#include "clock.h"
-#include "coor_sys.h"
-#include "vector.h"
-#include "graphlib.h"
+#include "clock.hpp"
+#include "coor_sys.hpp"
+#include "vector.hpp"
+#include "graphlib.hpp"
 #include <cmath>
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 
 void drawClock()
 {

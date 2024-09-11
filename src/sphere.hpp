@@ -1,7 +1,7 @@
 #ifndef SPHERE_DRAW_FUNCTIONS
 #define SPHERE_DRAW_FUNCTIONS
 
-#include "coor_sys.h"
+#include "coor_sys.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>

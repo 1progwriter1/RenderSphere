@@ -1,4 +1,4 @@
-#include "coor_sys.h"
+#include "coor_sys.hpp"
 
 PointCoordinates CoordinateSys::translateToPixels( const PointCoordinates &point) const
 {
