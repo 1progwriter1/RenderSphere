@@ -24,7 +24,6 @@ int main( const int argc, const char *argv[])
 
     GraphWindow window( 800, 600);
     Sphere sphere( 200, 800, 600);
-    sphere.setPixels();
 
     while ( window.window_.isOpen() )
     {
@@ -36,8 +35,9 @@ int main( const int argc, const char *argv[])
                 window.window_.close();
             }
         }
+        sphere.setPixels( &window.c_sys_);
 
-        window.drawPixels( sphere.pixels_);
+        window.drawPixels( sphere.getPixels());
     }
 
     return SUCCESS;

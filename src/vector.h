@@ -38,6 +38,7 @@ public:
     Vector &operator! ();
     Vector &operator~ ();
     Vector operator= ( const Vector &vec) const;
+    Vector reflectNormal( const Vector &normal);
 };
 
 Vector operator+ ( const Vector &vec_1, const Vector &vec_2);
@@ -45,5 +46,6 @@ Vector operator- ( const Vector &vec_1, const Vector &vec_2);
 double operator* ( const Vector &vec_1, const Vector &vec_2);
 
 double getAngle( Vector &vec_1, Vector &vec_2);
+double cosOfDifference( double cos_x, double cos_y);
 
 #endif // DRAW_VECTOR_FUNCTIONS

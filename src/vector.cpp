@@ -154,6 +154,15 @@ double operator* ( const Vector &vec_1, const Vector &vec_2)
                     (tmp_1.z - tmp_1.z_0) * (tmp_2.z - tmp_2.z_0);
 }
 
+Vector Vector::reflectNormal( const Vector &normal)
+{
+    Vector perpendicular = *this - normal;
+    (~perpendicular).move( perpendicular.x, perpendicular.y, perpendicular.z);
+    *this = normal + perpendicular;
+
+    return *this;
+}
+
 double getAngle( Vector &vec_1, Vector &vec_2)
 {
     double len = vec_1.getLength() * vec_2.getLength();
@@ -162,5 +171,5 @@ double getAngle( Vector &vec_1, Vector &vec_2)
     {
         return 0;
     }
-    return fabs( vec_1 * vec_2) / len;
+    return vec_1 * vec_2 / len;
 }

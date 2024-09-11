@@ -1,10 +1,21 @@
 #ifndef SPHERE_DRAW_FUNCTIONS
 #define SPHERE_DRAW_FUNCTIONS
 
+#include "coor_sys.h"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
+#include <vector>
 
-struct PointCoordinates3d
+struct LightPointData
+{
+    int x;
+    int y;
+    int z;
+    sf::Color color;
+    sf::Color blick;
+};
+
+struct Coordinates3d
 {
     int x;
     int y;
@@ -13,24 +24,35 @@ struct PointCoordinates3d
 
 class Sphere : sf::VertexArray
 {
-public:
-    sf::VertexArray pixels_;
 private:
+    sf::VertexArray pixels_;
+
     unsigned int width_;
     unsigned int height_;
     unsigned int radius_;
-    unsigned int length_;
 
-    PointCoordinates3d light_ = {};
+    Coordinates3d view_pos_;
+
+    std::vector<LightPointData> light_;
 
 public:
     Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height);
     ~Sphere();
-    void setPixels();
 
-private:
-    bool isInside( int x, int y);
-    sf::Color getColor( int x, int y);
+    sf::VertexArray &getPixels();
+    Coordinates3d getViewPos() const;
+    unsigned int getWidth() const;
+    unsigned int getHeight() const;
+    unsigned int getRadius() const;
+    const std::vector<LightPointData> &getLight() const;
+
+    int getZOnSphere( const PointCoordinates &point) const;
+    void setPixels( CoordinateSys *c_sys);
+    bool isInside( const PointCoordinates &point) const;
 };
+
+sf::Color getColor( const Sphere &sphere, const PointCoordinates &point);
+sf::Color getLambertColor( const Sphere &sphere, const PointCoordinates &point);
+sf::Color getBlick( const Sphere &sphere, const PointCoordinates &point);
 
 #endif // SPHERE_DRAW_FUNCTIONS
