@@ -20,7 +20,7 @@ public:
     ~GraphWindow();
     void drawLines( sf::Vertex *line, size_t size);
     void drawPixels( sf::VertexArray &pixels);
-    void drawSprites( std::vector<sf::Sprite> &sprites);
+    void drawSprite( const sf::Sprite &sprite);
 };
 
 #endif // GRAPH_LIB_FUNCTIONS

@@ -29,16 +29,11 @@ void GraphWindow::drawLines( sf::Vertex *lines, size_t size)
 
 void GraphWindow::drawPixels( sf::VertexArray &pixels)
 {
-    window_.clear( sf::Color::Black);
     window_.draw( pixels);
     window_.display();
 }
 
-void GraphWindow::drawSprites( std::vector<sf::Sprite> &sprites)
+void GraphWindow::drawSprite( const sf::Sprite &sprite)
 {
-    size_t number = sprites.size();
-    for ( size_t i = 0; i < number; i++ )
-    {
-        window_.draw( sprites.data()[i]);
-    }
+    window_.draw( sprite);
 }

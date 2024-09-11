@@ -1,4 +1,5 @@
 #include "sphere.hpp"
+#include "buttons.hpp"
 #include "coor_sys.hpp"
 #include "vector.hpp"
 #include <_types/_uint8_t.h>
@@ -21,9 +22,9 @@ Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int 
     width_  = init_width;
     height_ = init_height;
 
-    light_.push_back( { 10, -150, 250, sf::Color( 150, 0, 0, 255), sf::Color( 255, 102, 102, 255)});
-    light_.push_back( {-400, 0, 0, sf::Color( 0, 150, 0, 255), sf::Color( 0, 255, 128, 255)});
-    light_.push_back( {500, 500, 500, sf::Color( 255, 255, 153, 150), sf::Color( 255, 255, 204, 100)});
+    light_.push_back( {  10, -150, 250, sf::Color( 150, 0, 0, 255),     sf::Color( 255, 102, 102, 255)});
+    light_.push_back( {-400,   0,    0, sf::Color( 0, 150, 0, 255),     sf::Color( 0, 255, 128, 255)});
+    light_.push_back( { 500,  500, 500, sf::Color( 255, 255, 153, 150), sf::Color( 255, 255, 204, 100)});
 
     view_pos_ = { 500, 500, -300};
 }
@@ -88,7 +89,7 @@ sf::Color getColor( const Sphere &sphere, const PointCoordinates &point)
     }
     sf::Color color = DEFAULT_COLOR;
     color = color + getLambertColor( sphere, point);
-    // color = color + getBlick( sphere, point);
+    color = color + getBlick( sphere, point);
 
     return color;
 }
@@ -101,24 +102,17 @@ sf::Color getLambertColor( const Sphere &sphere, const PointCoordinates &point)
     int z_c = sphere.getZOnSphere( point);
     Vector normal( point.x, point.y, 0, 0, z_c, 0);
 
-
     size_t num_of_lights = lightData.size();
     for ( size_t i = 0; i < num_of_lights; i++ )
     {
-        int l_x = lightData.data()[i].x;
-        int l_y = lightData.data()[i].y;
-        int l_z = lightData.data()[i].z;
-        Vector light( l_x, l_y, point.x, point.y, l_z, z_c);
+        Vector light( lightData.data()[i].x, lightData.data()[i].y, point.x, point.y, lightData.data()[i].z, z_c);
 
         double angle = getAngle( light, normal);
         if ( angle < 0 ) angle = 0;
 
         sf::Color cur = lightData.data()[i].color;
 
-        cur.r = uint8_t( std::round( double( cur.r) * angle));
-        cur.g = uint8_t( std::round( double( cur.g) * angle));
-        cur.b = uint8_t( std::round( double( cur.b) * angle));
-        cur.a = uint8_t( std::round( double (cur.a) * angle));
+        mulColor( cur, angle);
 
         color = color + cur;
     }
@@ -139,10 +133,7 @@ sf::Color getBlick( const Sphere &sphere, const PointCoordinates &point)
     size_t num_of_lights = lightData.size();
     for ( size_t i = 0; i < num_of_lights; i++ )
     {
-        int l_x = lightData.data()[i].x;
-        int l_y = lightData.data()[i].y;
-        int l_z = lightData.data()[i].z;
-        Vector light( l_x, l_y, point.x, point.y, l_z, z_c);
+        Vector light( lightData.data()[i].x, lightData.data()[i].y, point.x, point.y, lightData.data()[i].z, z_c);
         Vector reflected = light.reflectNormal( normal);
 
         double angle = pow( getAngle( reflected, view), 13); // magical constant))))
@@ -150,13 +141,9 @@ sf::Color getBlick( const Sphere &sphere, const PointCoordinates &point)
 
         sf::Color cur = lightData.data()[i].blick;
 
-        cur.r = uint8_t( std::round( double( cur.r) * angle));
-        cur.g = uint8_t( std::round( double( cur.g) * angle));
-        cur.b = uint8_t( std::round( double( cur.b) * angle));
-        cur.a = uint8_t( std::round( double (cur.a) * angle));
+        mulColor( cur, angle);
 
         color = color + cur;
-
     }
 
     return color;
@@ -170,4 +157,35 @@ bool Sphere::isInside( const PointCoordinates &point) const
 int Sphere::getZOnSphere( const PointCoordinates &point) const
 {
     return int( std::round( sqrt( pow( radius_, 2) - pow( sqrt( pow( point.x, 2) + pow( point.y, 2)), 2))));
+}
+
+void mulColor( sf::Color &color, double angle)
+{
+    color.r = uint8_t( std::round( double( color.r) * angle));
+    color.g = uint8_t( std::round( double( color.g) * angle));
+    color.b = uint8_t( std::round( double( color.b) * angle));
+    color.a = uint8_t( std::round( double (color.a) * angle));
+}
+
+void Sphere::setRadius( unsigned int new_radius)
+{
+    radius_ = new_radius;
+}
+
+void Sphere::addButton( const Button &button)
+{
+    buttons_.push_back( button);
+}
+
+void createButtons( Sphere &sphere)
+{
+    sphere.addButton( Button( "images/plusNormal.png", 0.f, 0.f));
+    sphere.addButton( Button( "images/minusNormal.png", 0.f, 100.f));
+}
+
+const sf::Sprite &Sphere::getSprite( size_t index)
+{
+    assert( index < buttons_.size() );
+
+    return buttons_.data()[index].getSprite();
 }
