@@ -30,7 +30,6 @@ int main( const int argc, const char *argv[])
 
     GraphWindow window( W_WIDTH, W_HEIGHT);
     Sphere sphere( INIT_RADIUS, W_WIDTH, W_HEIGHT);
-    createButtons( sphere);
 
     while ( window.window_.isOpen() )
     {
