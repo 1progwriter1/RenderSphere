@@ -61,6 +61,7 @@ sf::Color getColor( const Sphere &sphere, const PointCoordinates &point);
 sf::Color getLambertColor( const Sphere &sphere, const PointCoordinates &point);
 sf::Color getBlick( const Sphere &sphere, const PointCoordinates &point);
 void mulColor( sf::Color &color, double angle);
+sf::Color blendolors( const sf::Color &color_1);
 
 void createButtons( Sphere &sphere);
 

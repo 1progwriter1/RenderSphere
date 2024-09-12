@@ -4,12 +4,6 @@
 #include "vector.hpp"
 #include <_types/_uint8_t.h>
 #include <cassert>
-#include <cinttypes>
-#include <cmath>
-#include <cstddef>
-#include <cstdio>
-#include <ratio>
-#include <sys/_types/_size_t.h>
 #include <vector>
 
 const sf::Color BACKGROUND_COLOR = sf::Color::Black;
@@ -89,7 +83,7 @@ sf::Color getColor( const Sphere &sphere, const PointCoordinates &point)
     }
     sf::Color color = DEFAULT_COLOR;
     color = color + getLambertColor( sphere, point);
-    color = color + getBlick( sphere, point);
+    // color = color + getBlick( sphere, point);
 
     return color;
 }

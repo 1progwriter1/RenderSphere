@@ -158,7 +158,7 @@ Vector Vector::reflectNormal( const Vector &normal)
 {
     Vector perpendicular = *this - normal;
     (~perpendicular).move( perpendicular.x, perpendicular.y, perpendicular.z);
-    *this = normal + perpendicular;
+    *this = normal + perpendicular; // pizdec
 
     return *this;
 }
