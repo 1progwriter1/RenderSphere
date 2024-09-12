@@ -167,11 +167,6 @@ int Sphere::getZOnSphere( const PointCoordinates &point) const
 
 void Sphere::setRadius( unsigned int new_radius)
 {
+    if ( new_radius <= 0 )  return;
     radius_ = new_radius;
-}
-
-
-void Sphere::addButton( const Button &button)
-{
-    buttons_.push_back( button);
 }

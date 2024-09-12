@@ -1,7 +1,6 @@
 #ifndef SPHERE_DRAW_FUNCTIONS
 #define SPHERE_DRAW_FUNCTIONS
 
-#include "buttons.hpp"
 #include "coor_sys.hpp"
 #include "color.hpp"
 #include <SFML/Graphics.hpp>
@@ -35,7 +34,6 @@ private:
     Coordinates3d view_pos_;
 
     std::vector<LightPointData> light_;
-    std::vector<Button> buttons_;
 
 public:
     Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height);
@@ -49,7 +47,6 @@ public:
     const std::vector<LightPointData> &getLight() const;
     const sf::Sprite &getSprite( size_t index);
 
-    void addButton( const Button &button);
     void setRadius( unsigned int new_radius);
 
     int getZOnSphere( const PointCoordinates &point) const;

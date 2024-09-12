@@ -48,7 +48,7 @@ int main( const int argc, const char *argv[])
         sphere.setPixels( &window.c_sys_);
         window.drawPixels( sphere.getPixels());
 
-        manager.proceedButtons( event);
+        manager.proceedButtons( window, event, sphere);
         manager.drawButtons( window);
 
         window.display();

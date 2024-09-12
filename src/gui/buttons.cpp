@@ -1,23 +1,28 @@
 #include "buttons.hpp"
 #include "graphlib.hpp"
+#include "sphere.hpp"
 #include <cassert>
 #include <cstddef>
+#include <cstdio>
 #include <sys/_types/_size_t.h>
+#include <xlocale/_stdio.h>
 
-Button::Button( float init_x_pos, float init_y_pos, const char **pictures, size_t num_of_pic)
-    :   state_( Normal_), position_x_( init_x_pos), position_y_( init_y_pos)
+const unsigned int RADIUS_STEP = 10;
+
+Button::Button( const ButtonData &init_data, const char **pictures, size_t num_of_pic, void (*execute_func)( Sphere &sphere))
+    :   state_( Normal_), data_( init_data), execute( execute_func)
 {
     assert( pictures);
     assert( num_of_pic >= NUMBER_OF_SPRITES);
 
-    sprites_ = new sf::Sprite[NUMBER_OF_SPRITES];
+    sprites_  = new sf::Sprite[NUMBER_OF_SPRITES];
     textures_ = new sf::Texture[NUMBER_OF_SPRITES];
 
     for ( size_t i = 0; i < NUMBER_OF_SPRITES; i++ )
     {
-        textures_[i].loadFromFile( pictures[i]);
-        sprites_[i].setTexture( textures_[i]);
-        sprites_->setPosition( init_x_pos, init_y_pos);
+        textures_[i].loadFromFile( pictures [i]);
+        sprites_ [i].setTexture  ( textures_[i]);
+        sprites_   ->setPosition ( init_data.position_x_, init_data.position_y_);
     }
 }
 
@@ -40,6 +45,23 @@ void Button::setState( States new_state)
     state_ = new_state;
 }
 
+bool Button::isOnFocus( sf::Vector2i mouse_pos)
+{
+    return data_.position_x_ <= mouse_pos.x && mouse_pos.x <= data_.position_x_ + data_.width &&
+            data_.position_y_ <= mouse_pos.y && mouse_pos.y <= data_.position_y_ + data_.height;
+}
+
+void executeMinus( Sphere &sphere)
+{
+    sphere.setRadius( sphere.getRadius() - RADIUS_STEP);
+}
+
+
+void executePlus( Sphere &sphere)
+{
+    sphere.setRadius( sphere.getRadius() + RADIUS_STEP);
+}
+
 
 ButtonsManager::ButtonsManager()
 {
@@ -56,22 +78,45 @@ ButtonsManager::~ButtonsManager()
 }
 
 
-void ButtonsManager::addButton( float init_x_pos, float init_y_pos, const char **pictures, size_t num_of_pic)
+void ButtonsManager::addButton( const ButtonData &init_data, const char **pictures, size_t num_of_pic, void (*execute_func)( Sphere &sphere))
 {
     assert( pictures);
 
-    Button *new_button = new Button( init_x_pos, init_y_pos, pictures, num_of_pic);
+    Button *new_button = new Button( init_data, pictures, num_of_pic, execute_func);
     buttons_.push_back( new_button);
 }
 
 
-void ButtonsManager::proceedButtons( sf::Event &event)
+void ButtonsManager::proceedButtons( GraphWindow &window, sf::Event &event, Sphere &sphere)
 {
     size_t size = buttons_.size();
-    for ( size_t i = 0; i < size; i++ )
-    {
 
+    if ( event.type == sf::Event::MouseButtonPressed )
+    {
+        for ( size_t i = 0; i < size; i++ )
+        {
+            if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
+            {
+                buttons_[i]->setState( Normal_);
+                buttons_[i]->execute( sphere);
+            }
+            else
+            {
+                buttons_[i]->setState( Normal_);
+            }
+        }
     }
+    else
+    {
+        for ( size_t i = 0; i < size; i++ )
+        {
+            if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
+                buttons_[i]->setState( OnHover_);
+            else
+                buttons_[i]->setState( Normal_);
+        }
+    }
+
 }
 
 
@@ -88,7 +133,10 @@ void ButtonsManager::drawButtons( GraphWindow &window)
 void ButtonsManager::initButtons()
 {
     const char *plus[] = {"Images/plusNormal.png", "Images/minusNormal.png", "Images/plusPressed.png", "Images/plusNormal.png"};
-    addButton( 0, 0, plus, 4);
+    ButtonData plus_data = { 0, 0, 100, 100};
+    addButton( plus_data, plus, 4, executePlus);
+
     const char *minus[] = {"Images/minusNormal.png", "Images/plusNormal.png", "Images/minusPressed.png", "Images/minusNormal.png"};
-    addButton( 100, 10, minus, 4);
+    ButtonData minus_data = {100, 10, 80, 80};
+    addButton( minus_data, minus, 4, executeMinus);
 }

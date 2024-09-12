@@ -2,6 +2,7 @@
 #define BUTTONS_FUNCTIONS
 
 #include "graphlib.hpp"
+#include "sphere.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>
@@ -14,6 +15,14 @@ enum States
     Released_ = 3,
 };
 
+struct ButtonData
+{
+    float position_x_;
+    float position_y_;
+    float width;
+    float height;
+};
+
 class Button
 {
     States state_;
@@ -22,19 +31,20 @@ class Button
     sf::Texture *textures_;
     const size_t NUMBER_OF_SPRITES = 4;
 
-    float position_x_;
-    float position_y_;
-
-    float width;
-    float height;
+    ButtonData data_;
 
 public:
-    Button( float init_x_pos, float init_y_pos, const char **pictures, size_t num_of_pic);
+    void (*execute)( Sphere &sphere);
+
+public:
+    Button( const ButtonData &init_data, const char **pictures, size_t num_of_pic, void (*execute_func)( Sphere &sphere));
     ~Button();
     sf::Sprite &getCurSprite();
 
     States getState() const;
     void setState( States new_state);
+
+    bool isOnFocus( sf::Vector2i mouse_pos);
 };
 
 class ButtonsManager
@@ -45,10 +55,14 @@ public:
     ButtonsManager();
     ~ButtonsManager();
 
-    void addButton( float init_x_pos, float init_y_pos, const char **pictures, size_t num_of_pic);
-    void proceedButtons( sf::Event &event);
+    void addButton( const ButtonData &init_data, const char **pictures, size_t num_of_pic, void (*execute_func)( Sphere &sphere));
+    void proceedButtons( GraphWindow &window, sf::Event &event, Sphere &sphere);
     void drawButtons( GraphWindow &window);
     void initButtons();
 };
+
+
+void executePlus( Sphere &sphere);
+void executeMinus( Sphere &sphere);
 
 #endif // BUTTONS_FUNCTIONS
