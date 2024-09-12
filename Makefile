@@ -7,10 +7,10 @@ CFLAGS=-fsanitize=address,alignment -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextr
 # -Wsuggest-override
 
 SFML=-lsfml-graphics -lsfml-window -lsfml-system
-INCLUDE=-I/opt/homebrew/include/
+INCLUDE=-I/opt/homebrew/include/ -I${PWD}/headers
 LINK=-L/opt/homebrew/lib
 
-SOURCES=$(wildcard src/*.cpp)
+SOURCES=$(wildcard src/*.cpp) $(wildcard src/clock/*.cpp) $(wildcard src/gui/*.cpp) $(wildcard src/coor_sys/*.cpp) $(wildcard src/sphere/*.cpp)
 
 COMP=g++
 

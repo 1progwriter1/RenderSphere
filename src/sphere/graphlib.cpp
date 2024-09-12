@@ -29,6 +29,7 @@ void GraphWindow::drawLines( sf::Vertex *lines, size_t size)
 
 void GraphWindow::drawPixels( sf::VertexArray &pixels)
 {
+    window_.clear( sf::Color::Black);
     window_.draw( pixels);
     window_.display();
 }
