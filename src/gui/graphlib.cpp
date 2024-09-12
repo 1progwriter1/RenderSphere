@@ -29,12 +29,20 @@ void GraphWindow::drawLines( sf::Vertex *lines, size_t size)
 
 void GraphWindow::drawPixels( sf::VertexArray &pixels)
 {
-    window_.clear( sf::Color::Black);
     window_.draw( pixels);
-    window_.display();
 }
 
 void GraphWindow::drawSprite( const sf::Sprite &sprite)
 {
     window_.draw( sprite);
+}
+
+void GraphWindow::display()
+{
+    window_.display();
+}
+
+void GraphWindow::clear( sf::Color color)
+{
+    window_.clear( color);
 }

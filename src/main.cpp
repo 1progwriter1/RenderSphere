@@ -30,6 +30,8 @@ int main( const int argc, const char *argv[])
 
     GraphWindow window( W_WIDTH, W_HEIGHT);
     Sphere sphere( INIT_RADIUS, W_WIDTH, W_HEIGHT);
+    ButtonsManager manager;
+    manager.initButtons();
 
     while ( window.window_.isOpen() )
     {
@@ -41,9 +43,15 @@ int main( const int argc, const char *argv[])
                 window.window_.close();
             }
         }
-        sphere.setPixels( &window.c_sys_);
+        window.clear();
 
+        sphere.setPixels( &window.c_sys_);
         window.drawPixels( sphere.getPixels());
+
+        manager.proceedButtons( event);
+        manager.drawButtons( window);
+
+        window.display();
     }
 
     return SUCCESS;

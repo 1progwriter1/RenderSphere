@@ -18,9 +18,13 @@ public:
 public:
     GraphWindow( unsigned int init_width, unsigned init_height, const char *label = "hello");
     ~GraphWindow();
+
     void drawLines( sf::Vertex *line, size_t size);
     void drawPixels( sf::VertexArray &pixels);
     void drawSprite( const sf::Sprite &sprite);
+
+    void display();
+    void clear( sf::Color color = sf::Color::Black);
 };
 
 #endif // GRAPH_LIB_FUNCTIONS

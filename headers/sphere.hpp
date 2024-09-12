@@ -3,6 +3,7 @@
 
 #include "buttons.hpp"
 #include "coor_sys.hpp"
+#include "color.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
 #include <vector>
@@ -12,8 +13,7 @@ struct LightPointData
     int x;
     int y;
     int z;
-    sf::Color color;
-    sf::Color blick;
+    Color color;
 };
 
 struct Coordinates3d
@@ -57,12 +57,8 @@ public:
     bool isInside( const PointCoordinates &point) const;
 };
 
-sf::Color getColor( const Sphere &sphere, const PointCoordinates &point);
-sf::Color getLambertColor( const Sphere &sphere, const PointCoordinates &point);
-sf::Color getBlick( const Sphere &sphere, const PointCoordinates &point);
-void mulColor( sf::Color &color, double angle);
-sf::Color blendolors( const sf::Color &color_1);
-
-void createButtons( Sphere &sphere);
+Color getColor( const Sphere &sphere, const PointCoordinates &point);
+Color getLambertColor( const Sphere &sphere, const PointCoordinates &point);
+Color getBlick( const Sphere &sphere, const PointCoordinates &point);
 
 #endif // SPHERE_DRAW_FUNCTIONS
