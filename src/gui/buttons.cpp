@@ -4,8 +4,6 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdio>
-#include <sys/_types/_size_t.h>
-#include <xlocale/_stdio.h>
 
 const unsigned int RADIUS_STEP = 10;
 
@@ -22,7 +20,7 @@ Button::Button( const ButtonData &init_data, const char **pictures, size_t num_o
     {
         textures_[i].loadFromFile( pictures [i]);
         sprites_ [i].setTexture  ( textures_[i]);
-        sprites_   ->setPosition ( init_data.position_x_, init_data.position_y_);
+        sprites_ [i].setPosition ( init_data.position_x_, init_data.position_y_);
     }
 }
 
@@ -97,7 +95,7 @@ void ButtonsManager::proceedButtons( GraphWindow &window, sf::Event &event, Sphe
         {
             if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
             {
-                buttons_[i]->setState( Normal_);
+                buttons_[i]->setState( Clicked_);
                 buttons_[i]->execute( sphere);
             }
             else
@@ -111,9 +109,12 @@ void ButtonsManager::proceedButtons( GraphWindow &window, sf::Event &event, Sphe
         for ( size_t i = 0; i < size; i++ )
         {
             if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
+            {
                 buttons_[i]->setState( OnHover_);
-            else
+            } else
+            {
                 buttons_[i]->setState( Normal_);
+            }
         }
     }
 
@@ -132,11 +133,11 @@ void ButtonsManager::drawButtons( GraphWindow &window)
 
 void ButtonsManager::initButtons()
 {
-    const char *plus[] = {"Images/plusNormal.png", "Images/minusNormal.png", "Images/plusPressed.png", "Images/plusNormal.png"};
-    ButtonData plus_data = { 0, 0, 100, 100};
+    const char *plus[] = {"images/plusNormal.png", "images/plusOnHover.png", "images/plusPressed.png", "images/plusNormal.png"};
+    ButtonData plus_data = { 0, 0, 64, 64};
     addButton( plus_data, plus, 4, executePlus);
 
-    const char *minus[] = {"Images/minusNormal.png", "Images/plusNormal.png", "Images/minusPressed.png", "Images/minusNormal.png"};
-    ButtonData minus_data = {100, 10, 80, 80};
+    const char *minus[] = {"images/minusNormal.png", "images/minusOnHover.png", "images/minusPressed.png", "images/minusNormal.png"};
+    ButtonData minus_data = {64, 0, 64, 64};
     addButton( minus_data, minus, 4, executeMinus);
 }
