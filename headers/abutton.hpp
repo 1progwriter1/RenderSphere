@@ -7,6 +7,7 @@ class AButton
 {
     int x_;
     int y_;
+
 public:
     AButton( int init_x, int init_y);
     virtual ~AButton() = default;

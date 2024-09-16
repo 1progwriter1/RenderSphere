@@ -6,10 +6,13 @@
 
 class ButtonsManager
 {
-    std::vector<AButton> buttons;
+    std::vector<AButton> buttons_;
+
 public:
     ButtonsManager()  = default;
     ~ButtonsManager() = default;
+
+    void addButton( AButton button);
 };
 
 #endif // BUTTONS_MANAGER
