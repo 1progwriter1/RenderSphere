@@ -23,12 +23,13 @@ struct ButtonData
     float height;
 };
 
-class Button
+class Button : public AButton
 {
     States state_;
 
     sf::Sprite *sprites_;
     sf::Texture *textures_;
+    Sphere *sphere;
     const size_t NUMBER_OF_SPRITES = 4;
 
     ButtonData data_;
@@ -37,7 +38,7 @@ public:
     void (*execute)( Sphere &sphere);
 
 public:
-    Button( const ButtonData &init_data, const char **pictures, size_t num_of_pic, void (*execute_func)( Sphere &sphere));
+    Button( const ButtonData &init_data, const char **pictures, size_t num_of_pic, Sphere *sphere);
     ~Button();
     sf::Sprite &getCurSprite();
 

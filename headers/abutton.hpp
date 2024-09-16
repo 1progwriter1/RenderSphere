@@ -11,13 +11,13 @@ public:
     AButton( int init_x, int init_y);
     virtual ~AButton() = default;
 
-    int getX() const;
-    int getY() const;
+    virtual void onClick  ( sf::Vector2i mouse_pos) = 0;
+    virtual void onHover  ( sf::Vector2i mouse_pos) = 0;
+    virtual void onRelease( sf::Vector2i mouse_pos) = 0;
 
 protected:
-    virtual void onClick( sf::Vector2i mouse_pos);
-    virtual void onHover( sf::Vector2i mouse_pos);
-    virtual void onRelease( sf::Vector2i mouse_pos);
+    int getX() const;
+    int getY() const;
 };
 
 #endif // ABSTRACT_BUTTON_FUNC
