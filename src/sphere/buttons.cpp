@@ -9,11 +9,11 @@ const size_t NUMBER_OF_ICONS = 4;
 // icons: Normal_, OnHover_, Clicked_, Released_
 const char *ICONS_PLUS[NUMBER_OF_ICONS] =
 {
-    "images/plusNormal.png", "images/plusOnHover.png", "images/plusPressed.png", "images/plusNormal.png"
+    "images/plusNormal64_64.png", "images/plusOnHover64_64.png", "images/plusPressed64_64.png", "images/plusNormal64_64.png"
 };
 const char *ICONS_MINUS[NUMBER_OF_ICONS] =
 {
-    "images/minusNormal.png", "images/minusOnHover.png", "images/minusPressed.png", "images/minusNormal.png"
+    "images/minusNormal64_64.png", "images/minusOnHover64_64.png", "images/minusPressed64_64.png", "images/minusNormal64_64.png"
 };
 
 const unsigned int RADIUS_STEP = 10;
@@ -26,6 +26,8 @@ Button::Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_pt
 
     sprites_  = new sf::Sprite[NUMBER_OF_ICONS];
     textures_ = new sf::Texture[NUMBER_OF_ICONS];
+
+    setSprites();
 }
 
 
@@ -80,13 +82,19 @@ void Button::onHover( sf::Vector2i mouse_pos)
     if ( isOnFocus( mouse_pos) )
     {
         this->setState( OnHover_);
+    } else
+    {
+        this->setState( Normal_);
     }
 }
 
 void Button::onClick( sf::Vector2i mouse_pos)
 {
     if ( !isOnFocus( mouse_pos) )
+    {
+        this->setState( Normal_);
         return;
+    }
     this->setState( Clicked_);
 
     switch ( this->id_ )
@@ -116,6 +124,6 @@ void createButtons( ButtonsManager &manager, Sphere *sphere)
     Button *plus_button = new Button( {0, 0, 64, 64}, ButtonPlus, sphere);
     manager.addButton( plus_button);
 
-    Button *minus_button = new Button( {0, 0, 64, 64}, ButtonMinus, sphere);
+    Button *minus_button = new Button( {64, 0, 64, 64}, ButtonMinus, sphere);
     manager.addButton( minus_button);
 }

@@ -1,7 +1,7 @@
 #include "buttons_manager.hpp"
 #include "abutton.hpp"
-#include "buttons.hpp"
 #include <cassert>
+#include <cstddef>
 
 ButtonsManager::~ButtonsManager()
 {
@@ -21,46 +21,36 @@ void ButtonsManager::addButton( AButton *new_button)
 }
 
 
-void ButtonsManager::proceedButtons( GraphWindow &window, sf::Event &event, Sphere &sphere)
+void ButtonsManager::drawButtons( GraphWindow *window)
 {
-    size_t size = buttons_.size();
+    assert( window );
 
-    if ( event.type == sf::Event::MouseButtonPressed )
+    size_t size = buttons_.size();
+    for ( size_t i = 0; i < size; i++ )
     {
-        for ( size_t i = 0; i < size; i++ )
-        {
-            if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
-            {
-                buttons_[i]->setState( Clicked_);
-                buttons_[i]->execute( sphere);
-            }
-            else
-            {
-                buttons_[i]->setState( Normal_);
-            }
-        }
-    }
-    else
-    {
-        for ( size_t i = 0; i < size; i++ )
-        {
-            if ( buttons_[i]->isOnFocus( sf::Mouse::getPosition( window.window_)))
-            {
-                buttons_[i]->setState( OnHover_);
-            } else
-            {
-                buttons_[i]->setState( Normal_);
-            }
-        }
+        window->drawSprite( buttons_[i]->getCurSprite());
     }
 }
 
 
-void ButtonsManager::drawButtons( GraphWindow &window)
+void ButtonsManager::proceedButtons( GraphWindow *window, sf::Event *event, Sphere *sphere)
 {
+    assert( window );
+    assert( event );
+    assert( sphere );
+
     size_t size = buttons_.size();
-    for ( size_t i = 0; i < size; i++ )
+    if ( event->type == sf::Event::MouseButtonPressed )
     {
-        window.drawSprite( buttons_[i]->getCurSprite());
+        for ( size_t i = 0; i < size; i++ )
+        {
+            buttons_[i]->onClick( sf::Mouse::getPosition( window->window_));
+        }
+    } else
+    {
+        for ( size_t i = 0; i < size; i++ )
+        {
+            buttons_[i]->onHover( sf::Mouse::getPosition( window->window_));
+        }
     }
 }

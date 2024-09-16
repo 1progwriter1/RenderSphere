@@ -2,6 +2,7 @@
 #define ABSTRACT_BUTTON_FUNC
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 class AButton
 {
@@ -10,11 +11,13 @@ class AButton
 
 public:
     AButton( int init_x, int init_y);
-    virtual ~AButton() = default;
+    virtual ~AButton();
 
     virtual void onClick  ( sf::Vector2i mouse_pos) = 0;
     virtual void onHover  ( sf::Vector2i mouse_pos) = 0;
     virtual void onRelease( sf::Vector2i mouse_pos) = 0;
+
+    virtual sf::Sprite &getCurSprite() = 0;
 
 protected:
     int getX() const;
