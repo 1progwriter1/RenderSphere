@@ -1,20 +1,23 @@
 #include "buttons_manager.hpp"
 #include "abutton.hpp"
-
-ButtonsManager::ButtonsManager()
-{
-
-}
+#include "buttons.hpp"
+#include <cassert>
 
 ButtonsManager::~ButtonsManager()
 {
-
+    size_t size = buttons_.size();
+    for ( size_t i = 0; i < size; i++ )
+    {
+        delete buttons_[i];
+    }
 }
 
 
-void ButtonsManager::addButton(  )
+void ButtonsManager::addButton( AButton *new_button)
 {
+    assert( new_button );
 
+    buttons_.push_back( new_button);
 }
 
 
@@ -60,16 +63,4 @@ void ButtonsManager::drawButtons( GraphWindow &window)
     {
         window.drawSprite( buttons_[i]->getCurSprite());
     }
-}
-
-
-void ButtonsManager::initButtons()
-{
-    const char *plus[] = {"images/plusNormal.png", "images/plusOnHover.png", "images/plusPressed.png", "images/plusNormal.png"};
-    ButtonData plus_data = { 0, 0, 64, 64};
-    addButton( plus_data, plus, 4, executePlus);
-
-    const char *minus[] = {"images/minusNormal.png", "images/minusOnHover.png", "images/minusPressed.png", "images/minusNormal.png"};
-    ButtonData minus_data = {64, 0, 64, 64};
-    addButton( minus_data, minus, 4, executeMinus);
 }

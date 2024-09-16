@@ -24,9 +24,8 @@ Button::Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_pt
 {
     assert( sphere_ptr );
 
-    sprites_  = new sf::Sprite[NUMBER_OF_SPRITES];
-    textures_ = new sf::Texture[NUMBER_OF_SPRITES];
-
+    sprites_  = new sf::Sprite[NUMBER_OF_ICONS];
+    textures_ = new sf::Texture[NUMBER_OF_ICONS];
 }
 
 
@@ -36,7 +35,7 @@ Button::~Button()
     delete [] textures_;
 }
 
-void Button::setSprites( int pos_x, int pos_y)
+void Button::setSprites()
 {
     const char **icons = nullptr;
     switch ( this->id_ )
@@ -54,7 +53,7 @@ void Button::setSprites( int pos_x, int pos_y)
     {
         textures_[i].loadFromFile( icons[i]);
         sprites_ [i].setTexture  ( textures_[i]);
-        sprites_ [i].setPosition( pos_x, pos_y);
+        sprites_ [i].setPosition( this->data_.pos_x, this->data_.pos_y);
     }
 }
 
@@ -110,4 +109,13 @@ void Button::onRelease( sf::Vector2i mouse_pos)
     if ( !isOnFocus( mouse_pos) )
         return;
     this->setState( Released_);
+}
+
+void createButtons( ButtonsManager &manager, Sphere *sphere)
+{
+    Button *plus_button = new Button( {0, 0, 64, 64}, ButtonPlus, sphere);
+    manager.addButton( plus_button);
+
+    Button *minus_button = new Button( {0, 0, 64, 64}, ButtonMinus, sphere);
+    manager.addButton( minus_button);
 }
