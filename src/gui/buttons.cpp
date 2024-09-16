@@ -117,7 +117,6 @@ void ButtonsManager::proceedButtons( GraphWindow &window, sf::Event &event, Sphe
             }
         }
     }
-
 }
 
 
