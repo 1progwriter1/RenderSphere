@@ -19,6 +19,9 @@ enum ButtonId
     ButtonRightArrow = 5,
     ButtonForwardArrow = 6,
     ButtonBackwardArrow = 7,
+    ButtonRedColor = 8,
+    ButtonBlueColor = 9,
+    ButtonGreenColor = 10,
 };
 
 enum States

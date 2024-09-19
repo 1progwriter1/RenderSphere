@@ -7,8 +7,8 @@
 #include <vector>
 
 const sf::Color BACKGROUND_COLOR = sf::Color::Black;
-const sf::Color DEFAULT_COLOR = sf::Color::Black;
-const sf::Color AMBIENT_COLOR = sf::Color( 50, 75, 100, 255);
+const sf::Color DEFAULT_COLOR = sf::Color(1, 0, 1, 50);
+const sf::Color AMBIENT_COLOR = sf::Color( 50, 75, 50, 50);
 
 Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height)
     :   pixels_( sf::Points, init_width * init_height),
@@ -76,13 +76,13 @@ void Sphere::setPixels( CoordinateSys *c_sys)
             pixels_[index].position = sf::Vector2f( float( x), float( y));
 
             PointCoordinates point = c_sys->translateFromPixels( {(int) x, (int) y});
-            pixels_[index].color = getColor( *this, point).getColor();
+            pixels_[index].color = calcColor( *this, point).getColor();
         }
     }
 }
 
 
-Color getColor( const Sphere &sphere, const PointCoordinates &point)
+Color calcColor( const Sphere &sphere, const PointCoordinates &point)
 {
 
     if ( !sphere.isInside( point) )
@@ -90,14 +90,14 @@ Color getColor( const Sphere &sphere, const PointCoordinates &point)
         return BACKGROUND_COLOR;
     }
     Color color = Color( DEFAULT_COLOR) * Color( AMBIENT_COLOR);
-    color = color + getLambertColor( sphere, point);
-    color = color + getBlick( sphere, point);
+    color = color + calcLambertColor( sphere, point);
+    color = color + calcBlick( sphere, point);
 
     return color;
 }
 
 
-Color getLambertColor( const Sphere &sphere, const PointCoordinates &point)
+Color calcLambertColor( const Sphere &sphere, const PointCoordinates &point)
 {
     Color color( 0, 0, 0, 255);
     std::vector<LightPointData> lightData = sphere.getLight();
@@ -123,7 +123,7 @@ Color getLambertColor( const Sphere &sphere, const PointCoordinates &point)
 }
 
 
-Color getBlick( const Sphere &sphere, const PointCoordinates &point)
+Color calcBlick( const Sphere &sphere, const PointCoordinates &point)
 {
     Coordinates3d view_pos = sphere.getViewPos();
 
@@ -217,5 +217,24 @@ int Sphere::getLightCoordinate( size_t light_ind, CoordNames coord)
             break;
         default:
             assert( 0);
+    }
+}
+
+
+void Sphere::setColorAttribute( size_t l_ind, ColorAttributes attr, uint8_t new_attr)
+{
+    switch ( attr )
+    {
+        case ColorRed:
+            light_[l_ind].color.getColor().a = new_attr;
+            return;
+        case ColorBlue:
+            light_[l_ind].color.getColor().b = new_attr;
+            return;
+        case ColorGreen:
+            light_[l_ind].color.getColor().g = new_attr;
+            return;
+        default:
+            assert( 0 );
     }
 }

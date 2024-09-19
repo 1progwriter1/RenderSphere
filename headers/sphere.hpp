@@ -5,6 +5,7 @@
 #include "color.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 enum CoordNames
@@ -12,6 +13,13 @@ enum CoordNames
     CoordX = 0,
     CoordY = 1,
     CoordZ = 2,
+};
+
+enum ColorAttributes
+{
+    ColorRed = 0,
+    ColorGreen = 1,
+    ColorBlue = 2,
 };
 
 struct LightPointData
@@ -52,7 +60,9 @@ public:
     Coordinates3d getViewPos() const;
     unsigned int getWidth() const;
     unsigned int getHeight() const;
+
     const std::vector<LightPointData> &getLight() const;
+    void setColorAttribute( size_t l_ind, ColorAttributes attr, uint8_t new_attr);
     const sf::Sprite &getSprite( size_t index);
 
     unsigned int getRadius() const;
@@ -69,8 +79,8 @@ public:
     int getLightCoordinate( size_t light_ind, CoordNames coord);
 };
 
-Color getColor( const Sphere &sphere, const PointCoordinates &point);
-Color getLambertColor( const Sphere &sphere, const PointCoordinates &point);
-Color getBlick( const Sphere &sphere, const PointCoordinates &point);
+Color calcColor( const Sphere &sphere, const PointCoordinates &point);
+Color calcLambertColor( const Sphere &sphere, const PointCoordinates &point);
+Color calcBlick( const Sphere &sphere, const PointCoordinates &point);
 
 #endif // SPHERE_DRAW_FUNCTIONS

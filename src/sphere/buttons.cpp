@@ -1,7 +1,9 @@
 #include "buttons.hpp"
 #include "abutton.hpp"
+#include "color.hpp"
 #include "sphere.hpp"
 #include <cstddef>
+#include <cstdint>
 #include <cstdio>
 #include <cassert>
 #include <vector>
@@ -9,6 +11,7 @@
 
 const unsigned int RADIUS_STEP = 10;
 const int COORDINATES_STEP = 10;
+const uint8_t COLOR_STEP = 10;
 
 Button::Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_ptr)
     :   AButton( init_data.pos_x, init_data.pos_y),
@@ -60,6 +63,15 @@ void Button::setSprites()
             break;
         case ButtonBackwardArrow:
              icons = BACKWARD_ARROW;
+            break;
+        case ButtonRedColor:
+             icons = RED_COLOR;
+            break;
+        case ButtonGreenColor:
+             icons = GREEN_COLOR;
+            break;
+        case ButtonBlueColor:
+             icons = BLUE_COLOR;
             break;
         default:
             assert( 0 && "This case is unreachable");
@@ -118,6 +130,8 @@ void Button::onClick( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *ke
     sphere_->setChangeStatus( true);
     std::vector<LightPointData> data = sphere_->getLight();
 
+    int8_t color_f = ( key->isKeyPressed( sf::Keyboard::A ) ) ? -1 : 1;
+
                                                     size_t l_ind = 0;
     if      ( key->isKeyPressed( sf::Keyboard::LAlt    ) ) l_ind = 1;
     else if ( key->isKeyPressed( sf::Keyboard::LControl) ) l_ind = 2;
@@ -154,6 +168,18 @@ void Button::onClick( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *ke
 
         case ButtonBackwardArrow:
             sphere_->setNewLightCoordinate( l_ind, CoordZ, sphere_->getLightCoordinate( l_ind, CoordZ) - COORDINATES_STEP);
+            break;
+
+        case ButtonRedColor:
+            sphere_->setColorAttribute( l_ind, ColorRed,   uint8_t( (int) data[l_ind].color.getColor().r + COLOR_STEP * color_f));
+            break;
+
+        case ButtonGreenColor:
+            sphere_->setColorAttribute( l_ind, ColorGreen, uint8_t( (int) data[l_ind].color.getColor().g + COLOR_STEP * color_f));
+            break;
+
+        case ButtonBlueColor:
+            sphere_->setColorAttribute( l_ind, ColorBlue,  uint8_t( (int) data[l_ind].color.getColor().b + COLOR_STEP * color_f));
             break;
 
         default:
@@ -196,6 +222,15 @@ void createButtons( ButtonsManager &manager, Sphere *sphere)
 
     Button *backward_arrow = new Button( {448, 0, 64, 64}, ButtonBackwardArrow, sphere);
     manager.addButton( backward_arrow);
+
+    Button *red_color = new Button( {512, 0, 64, 64}, ButtonRedColor, sphere);
+    manager.addButton( red_color);
+
+    Button *green_color = new Button( {576, 0, 64, 64}, ButtonGreenColor, sphere);
+    manager.addButton( green_color);
+
+    Button *blue_color = new Button( {640, 0, 64, 64}, ButtonBlueColor, sphere);
+    manager.addButton( blue_color);
 }
 
 

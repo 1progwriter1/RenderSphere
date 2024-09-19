@@ -38,5 +38,17 @@ const char *BACKWARD_ARROW[NUMBER_OF_ICONS] =
 {
     "images/backwardArrowNormal64_64.png", "images/backwardArrowOnHover64_64.png", "images/backwardArrowClicked64_64.png", "images/backwardArrowNormal64_64.png"
 };
+const char *RED_COLOR[NUMBER_OF_ICONS] =
+{
+    "images/redNormal64_64.png", "images/redOnHover64_64.png", "images/colorClicked64_64.png", "images/redNormal64_64.png"
+};
+const char *BLUE_COLOR[NUMBER_OF_ICONS] =
+{
+    "images/blueNormal64_64.png", "images/blueOnHover64_64.png", "images/colorClicked64_64.png", "images/blueNormal64_64.png"
+};
+const char *GREEN_COLOR[NUMBER_OF_ICONS] =
+{
+    "images/greenNormal64_64.png", "images/greenOnHover64_64.png", "images/colorClicked64_64.png", "images/greenNormal64_64.png"
+};
 
 #endif // BUTTONS_IMAGES_FILE
