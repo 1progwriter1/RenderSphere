@@ -2,7 +2,6 @@
 #define ABSTRACT_BUTTON_FUNC
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 class AButton
 {
@@ -13,11 +12,12 @@ public:
     AButton( int init_x, int init_y);
     virtual ~AButton();
 
-    virtual void onClick  ( sf::Vector2i mouse_pos) = 0;
-    virtual void onHover  ( sf::Vector2i mouse_pos) = 0;
-    virtual void onRelease( sf::Vector2i mouse_pos) = 0;
+    virtual void onClick  ( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key) = 0;
+    virtual void onHover  ( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key) = 0;
+    virtual void onRelease( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key) = 0;
 
     virtual sf::Sprite &getCurSprite() = 0;
+    virtual sf::RectangleShape &getClearShape() = 0;
 
 protected:
     int getX() const;

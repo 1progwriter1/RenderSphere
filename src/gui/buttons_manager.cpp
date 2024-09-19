@@ -3,6 +3,13 @@
 #include <cassert>
 #include <cstddef>
 
+
+ButtonsManager::ButtonsManager()
+{
+
+}
+
+
 ButtonsManager::~ButtonsManager()
 {
     size_t size = buttons_.size();
@@ -33,24 +40,25 @@ void ButtonsManager::drawButtons( GraphWindow *window)
 }
 
 
-void ButtonsManager::proceedButtons( GraphWindow *window, sf::Event *event, Sphere *sphere)
+void ButtonsManager::proceedButtons( GraphWindow *window, sf::Event *event, sf::Keyboard *key, Sphere *sphere)
 {
     assert( window );
     assert( event );
     assert( sphere );
+    assert( key );
 
     size_t size = buttons_.size();
     if ( event->type == sf::Event::MouseButtonPressed )
     {
         for ( size_t i = 0; i < size; i++ )
         {
-            buttons_[i]->onClick( sf::Mouse::getPosition( window->window_));
+            buttons_[i]->onClick( sf::Mouse::getPosition( window->window_), event, key);
         }
     } else
     {
         for ( size_t i = 0; i < size; i++ )
         {
-            buttons_[i]->onHover( sf::Mouse::getPosition( window->window_));
+            buttons_[i]->onHover( sf::Mouse::getPosition( window->window_), event, key);
         }
     }
 }

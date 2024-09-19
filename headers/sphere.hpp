@@ -7,6 +7,13 @@
 #include <cstddef>
 #include <vector>
 
+enum CoordNames
+{
+    CoordX = 0,
+    CoordY = 1,
+    CoordZ = 2,
+};
+
 struct LightPointData
 {
     int x;
@@ -35,6 +42,8 @@ private:
 
     std::vector<LightPointData> light_;
 
+    bool is_changed_;
+
 public:
     Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height);
     ~Sphere();
@@ -43,15 +52,21 @@ public:
     Coordinates3d getViewPos() const;
     unsigned int getWidth() const;
     unsigned int getHeight() const;
-    unsigned int getRadius() const;
     const std::vector<LightPointData> &getLight() const;
     const sf::Sprite &getSprite( size_t index);
 
+    unsigned int getRadius() const;
     void setRadius( unsigned int new_radius);
+
+    bool isChanged();
+    void setChangeStatus( bool new_status);
 
     int getZOnSphere( const PointCoordinates &point) const;
     void setPixels( CoordinateSys *c_sys);
     bool isInside( const PointCoordinates &point) const;
+
+    void setNewLightCoordinate( size_t light_ind, CoordNames coord, int new_value);
+    int getLightCoordinate( size_t light_ind, CoordNames coord);
 };
 
 Color getColor( const Sphere &sphere, const PointCoordinates &point);

@@ -1,13 +1,14 @@
-#include <cassert>
+#include <cstdio>
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
-#include <vector>
 #include "buttons.hpp"
 #include "clock.hpp"
 #include "graphlib.hpp"
 #include "sphere.hpp"
 
 #include "../../MyLibraries/headers/systemdata.h"
+
+// добавить функторы
 
 const unsigned int W_HEIGHT = 900;
 const unsigned int W_WIDTH = 1400;
@@ -36,6 +37,7 @@ int main( const int argc, const char *argv[])
     while ( window.window_.isOpen() )
     {
         sf::Event event;
+        sf::Keyboard key;
         while ( window.window_.pollEvent( event) )
         {
             if ( event.type == sf::Event::Closed )
@@ -43,12 +45,15 @@ int main( const int argc, const char *argv[])
                 window.window_.close();
             }
         }
-        window.clear();
-
-        sphere.setPixels( &window.c_sys_);
+        if ( sphere.isChanged() )
+        {
+            sphere.setPixels( &window.c_sys_);
+            sphere.setChangeStatus( false);
+            window.display();
+        }
+        window.clear( sf::Color::Black);
         window.drawPixels( sphere.getPixels());
-
-        manager.proceedButtons( &window, &event, &sphere);
+        manager.proceedButtons( &window, &event, &key, &sphere);
         manager.drawButtons( &window);
 
         window.display();

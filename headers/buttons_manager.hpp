@@ -11,13 +11,15 @@ class ButtonsManager
     std::vector<AButton *> buttons_;
 
 public:
-    ButtonsManager()  = default;
+    ButtonsManager();
     ~ButtonsManager();
+
+    bool needDrawSphere();
 
     void addButton( AButton *new_button);
     void drawButtons( GraphWindow *window);
 
-    void proceedButtons( GraphWindow *window, sf::Event *event, Sphere *sphere);
+    void proceedButtons( GraphWindow *window, sf::Event *event, sf::Keyboard *key, Sphere *sphere);
 };
 
 #endif // BUTTONS_MANAGER

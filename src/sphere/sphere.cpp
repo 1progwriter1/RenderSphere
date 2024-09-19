@@ -3,6 +3,7 @@
 #include "vector.hpp"
 #include <_types/_uint8_t.h>
 #include <cassert>
+#include <cstddef>
 #include <vector>
 
 const sf::Color BACKGROUND_COLOR = sf::Color::Black;
@@ -11,9 +12,9 @@ const sf::Color AMBIENT_COLOR = sf::Color( 50, 75, 100, 255);
 
 Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int init_height)
     :   pixels_( sf::Points, init_width * init_height),
-        width_( init_width), height_( init_height), radius_( init_radius)
+        width_( init_width), height_( init_height), radius_( init_radius), is_changed_( true)
 {
-    light_.push_back( {  10, -150, 250, Color( 150, 0, 0, 255)});
+    light_.push_back( {  300, -150, 250, Color( 150, 0, 0, 255)});
     light_.push_back( {-600,   0,    0, Color( 0, 150, 0, 255)});
     light_.push_back( { 500,  500, 500, Color( 100, 100, 100, 255)});
 
@@ -169,4 +170,52 @@ void Sphere::setRadius( unsigned int new_radius)
 {
     if ( new_radius <= 0 )  return;
     radius_ = new_radius;
+}
+
+
+bool Sphere::isChanged()
+{
+    return is_changed_;
+}
+
+
+void Sphere::setChangeStatus( bool new_status)
+{
+    is_changed_ = new_status;
+}
+
+
+void Sphere::setNewLightCoordinate( size_t light_ind, CoordNames coord, int new_value)
+{
+    switch( coord )
+    {
+        case CoordX:
+            light_[(size_t)light_ind].x = new_value;
+            break;
+        case CoordY:
+            light_[(size_t)light_ind].y = new_value;
+            break;
+        case CoordZ:
+            light_[(size_t)light_ind].z = new_value;
+
+    }
+}
+
+
+int Sphere::getLightCoordinate( size_t light_ind, CoordNames coord)
+{
+    switch( coord )
+    {
+        case CoordX:
+            return light_[(size_t)light_ind].x;
+            break;
+        case CoordY:
+            return light_[(size_t)light_ind].y;
+            break;
+        case CoordZ:
+            return light_[(size_t)light_ind].z;
+            break;
+        default:
+            assert( 0);
+    }
 }
