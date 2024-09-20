@@ -1,9 +1,12 @@
 #include "sphere.hpp"
 #include "coor_sys.hpp"
 #include "vector.hpp"
+#include <_stdio.h>
 #include <_types/_uint8_t.h>
 #include <cassert>
 #include <cstddef>
+#include <cstdio>
+#include <cstdlib>
 #include <vector>
 
 const sf::Color BACKGROUND_COLOR = sf::Color::Black;
@@ -18,7 +21,7 @@ Sphere::Sphere( unsigned int init_radius, unsigned int init_width, unsigned int 
     light_.push_back( {-600,   0,    0, Color( 0, 150, 0, 255)});
     light_.push_back( { 500,  500, 500, Color( 100, 100, 100, 255)});
 
-    view_pos_ = { 0, 0, 500};
+    view_pos_ = { 0, 0, 600};
 }
 
 
@@ -128,24 +131,24 @@ Color calcBlick( const Sphere &sphere, const PointCoordinates &point)
     Coordinates3d view_pos = sphere.getViewPos();
 
     int z_c = sphere.getZOnSphere( point);
-    Vector view( point.x, point.y, view_pos.x, view_pos.y, z_c, view_pos.z);
+    Vector view( view_pos.x, view_pos.y, point.x, point.y, view_pos.z, z_c);
     Vector normal( point.x, point.y, 0, 0, z_c, 0);
+    normal.move( point.x, point.y, z_c);
 
     Color color( 0, 0, 0, 255);
     std::vector<LightPointData> lightData = sphere.getLight();
 
-    size_t num_of_lights = lightData.size();
-    for ( size_t i = 0; i < num_of_lights; i++ )
+    for ( size_t i = 0; i < lightData.size(); i++ )
     {
         Vector light( lightData.data()[i].x, lightData.data()[i].y, point.x, point.y, lightData.data()[i].z, z_c);
         Vector reflected = light.reflectNormal( normal);
 
-        double angle = pow( getAngle( reflected, view), 30); // magical constant))))
+        double angle = getAngle( reflected, view);
         if ( angle < 0 ) angle = 0;
 
-        Color cur( lightData.data()[i].color);
+        Color cur( lightData[i].color);
 
-        cur = cur * angle;
+        cur = cur * pow( angle, 30);
 
         color = color + cur;
     }
@@ -197,6 +200,8 @@ void Sphere::setNewLightCoordinate( size_t light_ind, CoordNames coord, int new_
             break;
         case CoordZ:
             light_[(size_t)light_ind].z = new_value;
+        default:
+            assert( 0 );
 
     }
 }
@@ -226,13 +231,13 @@ void Sphere::setColorAttribute( size_t l_ind, ColorAttributes attr, uint8_t new_
     switch ( attr )
     {
         case ColorRed:
-            light_[l_ind].color.getColor().a = new_attr;
-            return;
-        case ColorBlue:
-            light_[l_ind].color.getColor().b = new_attr;
+            light_[l_ind].color.getColor().r = new_attr;
             return;
         case ColorGreen:
             light_[l_ind].color.getColor().g = new_attr;
+            return;
+        case ColorBlue:
+            light_[l_ind].color.getColor().b = new_attr;
             return;
         default:
             assert( 0 );

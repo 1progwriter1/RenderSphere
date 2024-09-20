@@ -7,7 +7,7 @@
 const double EPSILON = 1e-6;
 const double ENDING_SIZE_CF = 10.f;
 
-Vector::Vector( int init_x, int init_y, int init_x_0, int init_y_0, int init_z, int init_z_0)
+Vector::Vector( double init_x, double init_y, double init_x_0, double init_y_0, double init_z, double init_z_0)
 {
     this->x = init_x;
     this->x_0 = init_x_0;
@@ -28,9 +28,9 @@ Vector &Vector::operator/ ( double cf)
 {
     assert( std::fabs( cf) >= EPSILON);
 
-    x = x_0 + int( std::round( (x - x_0) / cf));
-    y = y_0 + int( std::round( (y - y_0) / cf));
-    z = z_0 + int( std::round( (z - z_0) / cf));
+    x = x_0 + (x - x_0) / cf;
+    y = y_0 + (y - y_0) / cf;
+    z = z_0 + (z - z_0) / cf;
 
     return *this;
 }
@@ -48,13 +48,13 @@ Vector &Vector::operator~ ()
 // perpendicular
 Vector &Vector::operator! ()
 {
-    assert( z == 0 );
-    assert( z_0 == 0 );
+    assert( fabs( z) < EPSILON );
+    assert( fabs( z_0) < EPSILON );
 
-    int tmp_x_0 = this->x_0;
-    int tmp_y_0 = this->y_0;
+    double tmp_x_0 = this->x_0;
+    double tmp_y_0 = this->y_0;
     this->move( 0, 0);
-    int tmp_x = -this->y;
+    double tmp_x = -this->y;
     this->y = this->x;
     this->x = tmp_x;
     this->move( tmp_x_0, tmp_y_0);
@@ -82,9 +82,9 @@ void Vector::setLength( double new_length)
 {
     double cur_length = getLength();
 
-    x = int( std::round( x / cur_length * new_length));
-    y = int( std::round( y / cur_length * new_length));
-    z = int( std::round( z / cur_length * new_length));
+    x = (x - x_0) / cur_length * new_length + x_0;
+    y = (y - y_0) / cur_length * new_length + y_0;
+    z = (z - z_0) / cur_length * new_length + z_0;
 
     is_length_real = false;
 }
@@ -108,7 +108,7 @@ void Vector::createEnding( VectorCoordinates *end_1, VectorCoordinates *end_2) c
     *end_2 = part2.getCoordinates();
 }
 
-Vector &Vector::move( int new_x_0, int new_y_0, int new_z_0)
+Vector &Vector::move( double new_x_0, double new_y_0, double new_z_0)
 {
     x += new_x_0 - x_0;
     y += new_y_0 - y_0;
@@ -125,13 +125,8 @@ Vector operator+ ( const Vector &vec_1, const Vector &vec_2)
     VectorCoordinates fst = vec_1.getCoordinates();
     VectorCoordinates snd = vec_2.getCoordinates();
 
-    snd.x += fst.x_0 - snd.x_0;
-    snd.y += fst.y_0 - snd.y_0;
-    snd.z += fst.z_0 - snd.z_0;
-
-    fst.x_0 = snd.x_0;
-    fst.y_0 = snd.y_0;
-    fst.z_0 = snd.z_0;
+    Vector tmp = vec_2;
+    tmp.move( fst.x, fst.y, fst.z);
 
     return Vector( fst.x + snd.x - snd.x_0, fst.y + snd.y - snd.y_0, fst.x_0, fst.y_0, fst.z + snd.z - snd.z_0, fst.z_0);
 }
@@ -154,13 +149,14 @@ double operator* ( const Vector &vec_1, const Vector &vec_2)
                     (tmp_1.z - tmp_1.z_0) * (tmp_2.z - tmp_2.z_0);
 }
 
-Vector Vector::reflectNormal( const Vector &normal)
+Vector Vector::reflectNormal( Vector &normal)
 {
-    Vector perpendicular = *this - normal;
-    (~perpendicular).move( perpendicular.x, perpendicular.y, perpendicular.z);
-    *this = normal + perpendicular; // pizdec
+    Vector normal_n = normalize( normal);
+    double len = this->getLength();
+    double angle = getAngle( *this, normal);
 
-    return *this;
+    normal_n.setLength( len);
+    return  normal_n * 2 * angle - *this;
 }
 
 double getAngle( Vector &vec_1, Vector &vec_2)
@@ -172,4 +168,32 @@ double getAngle( Vector &vec_1, Vector &vec_2)
         return 0;
     }
     return vec_1 * vec_2 / len;
+}
+
+
+Vector normalize( Vector &vec)
+{
+    double len = vec.getLength();
+    if ( fabs( len) < EPSILON ) return vec;
+    VectorCoordinates coord = vec.getCoordinates();
+
+    return Vector( coord.x_0 + (coord.x - coord.x_0) / len,
+                    coord.y_0 + (coord.y - coord.y_0) / len,
+                    coord.x_0,
+                    coord.y_0,
+                    coord.z_0 + (coord.z - coord.z_0) / len,
+                    coord.z_0);
+}
+
+
+Vector operator* ( const Vector &vec, double cf)
+{
+    VectorCoordinates coord = vec.getCoordinates();
+
+    return Vector( coord.x_0 + (coord.x - coord.x_0) * cf,
+                    coord.y_0 + (coord.y - coord.y_0) * cf,
+                    coord.x_0,
+                    coord.y_0,
+                    coord.z_0 + (coord.z - coord.z_0) * cf,
+                    coord.z_0);
 }

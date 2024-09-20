@@ -7,6 +7,7 @@
 #include "sphere.hpp"
 
 #include "../../MyLibraries/headers/systemdata.h"
+#include "vector.hpp"
 
 // добавить функторы
 
@@ -28,6 +29,19 @@ int main( const int argc, const char *argv[])
         }
         return SUCCESS;
     }
+
+//     Vector normal( 0, 7, 0, 0, 5, 0);
+//     Vector light( -10, 14, 0, 0, 10, 0);
+//     Vector reflected = light.reflectNormal( normal);
+//
+//     fprintf( stderr, "%f %f %f %f %f %f\n", reflected.getCoordinates().x, reflected.getCoordinates().y, reflected.getCoordinates().z,
+//                                                     reflected.getCoordinates().x_0, reflected.getCoordinates().y_0, reflected.getCoordinates().z_0);
+//             fprintf( stderr, "%f %f %f %f %f %f\n", normal.getCoordinates().x, normal.getCoordinates().y, normal.getCoordinates().z,
+//                                                     normal.getCoordinates().x_0, normal.getCoordinates().y_0, normal.getCoordinates().z_0);
+//             fprintf( stderr, "%f %f %f %f %f %f\n", light.getCoordinates().x, light.getCoordinates().y, light.getCoordinates().z,
+//                                                     light.getCoordinates().x_0, light.getCoordinates().y_0, light.getCoordinates().z_0);
+//
+//     fprintf( stderr, "%f %f %f\n", getAngle( light, normal), getAngle( reflected, normal), getAngle( normal, reflected));
 
     GraphWindow window( W_WIDTH, W_HEIGHT);
     Sphere sphere( INIT_RADIUS, W_WIDTH, W_HEIGHT);
@@ -53,6 +67,7 @@ int main( const int argc, const char *argv[])
         }
         window.clear( sf::Color::Black);
         window.drawPixels( sphere.getPixels());
+
         manager.proceedButtons( &window, &event, &key, &sphere);
         manager.drawButtons( &window);
 

@@ -3,5 +3,5 @@
 *.out
 test.cpp
 *.json
-*.cache
+*.cache/*
 *.DS_Store

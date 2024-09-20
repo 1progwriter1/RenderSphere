@@ -99,12 +99,12 @@ void Clock::pushArrow( CoordinateSys *c_sys, PointCoordinates start, PointCoordi
     VectorCoordinates end_1 = {}, end_2 = {};
     arrow.createEnding( &end_1, &end_2);
 
-    pushLine( c_sys->translateToPixels( {vec.x_0, vec.y_0}),
-                c_sys->translateToPixels( {vec.x, vec.y}));
-    pushLine( c_sys->translateToPixels( {end_1.x_0, end_1.y_0}),
-                c_sys->translateToPixels( {end_1.x, end_1.y}));
-    pushLine( c_sys->translateToPixels( {end_2.x_0, end_2.y_0}),
-                c_sys->translateToPixels( {end_2.x, end_2.y}));
+    pushLine( c_sys->translateToPixels( {(int) vec.x_0, (int) vec.y_0}),
+                c_sys->translateToPixels( {(int) vec.x, (int) vec.y}));
+    pushLine( c_sys->translateToPixels( {(int) end_1.x_0, (int) end_1.y_0}),
+                c_sys->translateToPixels( {(int) end_1.x, (int) end_1.y}));
+    pushLine( c_sys->translateToPixels( {(int) end_2.x_0, (int) end_2.y_0}),
+                c_sys->translateToPixels( {(int) end_2.x, (int) end_2.y}));
 }
 
 void Clock::pushLine( PointCoordinates point_1, PointCoordinates point_2)
