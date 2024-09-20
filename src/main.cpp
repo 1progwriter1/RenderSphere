@@ -69,7 +69,7 @@ int main( const int argc, const char *argv[])
         window.drawPixels( sphere.getPixels());
 
         manager.proceedButtons( &window, &event, &key, &sphere);
-        manager.drawButtons( &window);
+        manager.drawButtons( window);
 
         window.display();
     }

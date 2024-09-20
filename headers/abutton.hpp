@@ -16,6 +16,8 @@ public:
     virtual void onHover  ( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key) = 0;
     virtual void onRelease( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key) = 0;
 
+    virtual void draw( sf::RenderWindow &window) = 0;
+
     virtual sf::Sprite &getCurSprite() = 0;
     virtual sf::RectangleShape &getClearShape() = 0;
 

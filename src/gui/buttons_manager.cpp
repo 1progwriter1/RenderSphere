@@ -28,14 +28,12 @@ void ButtonsManager::addButton( AButton *new_button)
 }
 
 
-void ButtonsManager::drawButtons( GraphWindow *window)
+void ButtonsManager::drawButtons( GraphWindow &window)
 {
-    assert( window );
-
     size_t size = buttons_.size();
     for ( size_t i = 0; i < size; i++ )
     {
-        window->drawSprite( buttons_[i]->getCurSprite());
+        buttons_[i]->draw( window.window_);
     }
 }
 

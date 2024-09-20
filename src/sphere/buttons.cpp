@@ -16,7 +16,8 @@ const uint8_t COLOR_STEP = 10;
 Button::Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_ptr)
     :   AButton( init_data.pos_x, init_data.pos_y),
         state_( Normal_), id_( init_id), light_ind( 0), sphere_( sphere_ptr), data_( init_data),
-        clearShape_( sf::Vector2f( float( init_data.width), float( init_data.height)))
+        clearShape_( sf::Vector2f( float( init_data.width), float( init_data.height))),
+        transp_cf_( 0), animation_type_( Normal_)
 {
     assert( sphere_ptr );
 
@@ -243,4 +244,41 @@ sf::RectangleShape &Button::getClearShape()
 void Button::setLightInd( size_t ind)
 {
     light_ind = ind;
+}
+
+
+void Button::draw( sf::RenderWindow &window)
+{
+    animation_type_ = state_;
+    switch ( animation_type_ )
+    {
+        case Normal_:
+        case OnHover_:
+            window.draw( this->getCurSprite());
+            break;
+
+        case Clicked_:
+            window.draw( this->getCurSprite());
+            break;
+
+        case Released_:
+            window.draw( this->getCurSprite());
+            break;
+
+        default:
+            assert( 0 );
+    }
+}
+
+
+
+States Button::getAnimation()
+{
+    return animation_type_;
+}
+
+
+void Button::setAnimation( States new_anim)
+{
+    animation_type_ = new_anim;
 }

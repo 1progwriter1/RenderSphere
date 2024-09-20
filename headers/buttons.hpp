@@ -43,7 +43,6 @@ struct ButtonData
 class Button : public AButton
 {
     States state_;
-
     ButtonId id_;
 
     size_t light_ind;
@@ -52,10 +51,11 @@ class Button : public AButton
     sf::Texture *textures_;
 
     Sphere *sphere_;
-
     ButtonData data_;
-
     sf::RectangleShape clearShape_;
+
+    float transp_cf_;
+    States animation_type_;
 
 public:
     Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_ptr);
@@ -65,6 +65,9 @@ public:
     sf::Sprite &getCurSprite();
     States getState() const;
     void setState( States new_state);
+
+    States getAnimation();
+    void setAnimation( States new_anim);
 
     bool isOnFocus( sf::Vector2i mouse_pos);
 
@@ -76,6 +79,7 @@ public:
     void onClick  ( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key);
     void onHover  ( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key);
     void onRelease( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key);
+    void draw( sf::RenderWindow &window);
 
     void setLightInd( size_t ind);
 

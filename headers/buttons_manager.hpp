@@ -17,7 +17,7 @@ public:
     bool needDrawSphere();
 
     void addButton( AButton *new_button);
-    void drawButtons( GraphWindow *window);
+    void drawButtons( GraphWindow &window);
 
     void proceedButtons( GraphWindow *window, sf::Event *event, sf::Keyboard *key, Sphere *sphere);
 };
