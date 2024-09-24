@@ -17,7 +17,7 @@ Button::Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_pt
     :   AButton( init_data.pos_x, init_data.pos_y),
         state_( Normal_), id_( init_id), light_ind( 0), sphere_( sphere_ptr), data_( init_data),
         clearShape_( sf::Vector2f( float( init_data.width), float( init_data.height))),
-        transp_cf_( 0), animation_type_( Normal_)
+        animation( 0, Normal_)
 {
     assert( sphere_ptr );
 
@@ -103,26 +103,20 @@ bool Button::isOnFocus( sf::Vector2i mouse_pos)
             data_.pos_y <= mouse_pos.y && mouse_pos.y <= data_.pos_y + data_.height;
 }
 
-void Button::onHover( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key)
+void Button::onHover( sf::Vector2i mouse_pos, sf::Event */*event*/, sf::Keyboard */*key*/)
 {
-    assert( event );
-    assert( key );
 
-    if ( isOnFocus( mouse_pos) )
-    {
+    if ( this->isOnFocus( mouse_pos) )
         this->setState( OnHover_);
-    } else
-    {
+    else
         this->setState( Normal_);
-    }
 }
 
-void Button::onClick( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key)
+void Button::onClick( sf::Vector2i mouse_pos, sf::Event */*event*/, sf::Keyboard *key)
 {
-    assert( event );
     assert( key );
 
-    if ( !isOnFocus( mouse_pos) )
+    if ( !this->isOnFocus( mouse_pos) )
     {
         this->setState( Normal_);
         return;
@@ -188,14 +182,15 @@ void Button::onClick( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *ke
     }
 }
 
-void Button::onRelease( sf::Vector2i mouse_pos, sf::Event *event, sf::Keyboard *key)
+void Button::onRelease( sf::Vector2i mouse_pos, sf::Event */*event*/, sf::Keyboard */*key*/)
 {
-    assert( event );
-    assert( key );
-
-    if ( !isOnFocus( mouse_pos) )
-        return;
-    this->setState( Released_);
+    if ( this->isOnFocus( mouse_pos) )
+    {
+        this->setState( Released_);
+    } else
+    {
+        this->setState( Normal_);
+    }
 }
 
 void createButtons( ButtonsManager &manager, Sphere *sphere)
@@ -249,36 +244,58 @@ void Button::setLightInd( size_t ind)
 
 void Button::draw( sf::RenderWindow &window)
 {
-    animation_type_ = state_;
-    switch ( animation_type_ )
+    window.draw( this->getCurSprite());
+    return;
+    switch ( state_ )
     {
-        case Normal_:
-        case OnHover_:
-            window.draw( this->getCurSprite());
-            break;
-
         case Clicked_:
-            window.draw( this->getCurSprite());
+            animation.animOnClick( *this, window);
             break;
 
         case Released_:
-            window.draw( this->getCurSprite());
+            animation.animReleased( *this, window);
+            break;
+
+        case OnHover_:
+            animation.animOnHover( *this, window);
+            break;
+
+        case Normal_:
+            animation.animNormal( *this, window);
             break;
 
         default:
             assert( 0 );
     }
+
 }
 
 
-
-States Button::getAnimation()
+void Animation::animNormal( Button &button, sf::RenderWindow &window)
 {
-    return animation_type_;
+
 }
 
 
-void Button::setAnimation( States new_anim)
+void Animation::animOnClick( Button &button, sf::RenderWindow &window)
 {
-    animation_type_ = new_anim;
+    animation_type_ = Clicked_;
+    transp_c_ = 0;
+    window.draw( button.getCurSprite());
+}
+
+
+void Animation::animOnHover( Button &button, sf::RenderWindow &window)
+{
+    if ( animation_type_ != OnHover_ )
+    {
+        transp_c_ = 0;
+        animation_type_ = OnHover_;
+    }
+}
+
+
+void Animation::animReleased( Button &button, sf::RenderWindow &window)
+{
+
 }

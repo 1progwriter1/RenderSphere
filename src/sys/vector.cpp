@@ -1,7 +1,5 @@
 #include "vector.hpp"
-#include <array>
 #include <cassert>
-#include <chrono>
 #include <cmath>
 
 const double EPSILON = 1e-6;
@@ -24,43 +22,6 @@ VectorCoordinates Vector::getCoordinates() const
     return {x, y, z, x_0, y_0, z_0};
 }
 
-Vector &Vector::operator/ ( double cf)
-{
-    assert( std::fabs( cf) >= EPSILON);
-
-    x = x_0 + (x - x_0) / cf;
-    y = y_0 + (y - y_0) / cf;
-    z = z_0 + (z - z_0) / cf;
-
-    return *this;
-}
-
-// reverse
-Vector &Vector::operator~ ()
-{
-    std::swap( x_0, x);
-    std::swap( y_0, y);
-    std::swap( z_0, z);
-
-    return *this;
-}
-
-// perpendicular
-Vector &Vector::operator! ()
-{
-    assert( fabs( z) < EPSILON );
-    assert( fabs( z_0) < EPSILON );
-
-    double tmp_x_0 = this->x_0;
-    double tmp_y_0 = this->y_0;
-    this->move( 0, 0);
-    double tmp_x = -this->y;
-    this->y = this->x;
-    this->x = tmp_x;
-    this->move( tmp_x_0, tmp_y_0);
-
-    return *this;
-}
 
 Vector Vector::operator= ( const Vector &vec) const
 {
@@ -94,17 +55,19 @@ void Vector::createEnding( VectorCoordinates *end_1, VectorCoordinates *end_2) c
     assert( end_1);
     assert( end_2);
 
-    Vector reversed = *this;
-    reversed = ~reversed / ENDING_SIZE_CF;
+    Vector reversed = ~*this;
+    reversed /= ENDING_SIZE_CF;
 
-    Vector perpendicular = *this;
-    (!perpendicular).move( this->x, this->y, this->z) / ENDING_SIZE_CF;
+    Vector perpendicular = !*this;
+    perpendicular.move( this->x, this->y, this->z);
+    perpendicular /= ENDING_SIZE_CF;
 
     Vector part = perpendicular + reversed;
     *end_1 = part.getCoordinates();
 
-    (~perpendicular).move( this->x, this->y);
-    Vector part2 = perpendicular + reversed;
+    Vector perpendicular2 = ~perpendicular;
+    perpendicular2.move( this->x, this->y, this->z);
+    Vector part2 = perpendicular2 + reversed;
     *end_2 = part2.getCoordinates();
 }
 
@@ -196,4 +159,65 @@ Vector operator* ( const Vector &vec, double cf)
                     coord.y_0,
                     coord.z_0 + (coord.z - coord.z_0) * cf,
                     coord.z_0);
+}
+
+
+Vector operator/ ( const Vector &vec, double cf)
+{
+    assert( std::fabs( cf) >= EPSILON);
+
+    Vector tmp = vec;
+
+    tmp /= cf;
+
+    return tmp;
+}
+
+
+// perpendicular
+Vector operator! ( const Vector &vec)
+{
+    Vector tmp = vec;
+
+    tmp != tmp;
+
+    return tmp;
+}
+
+
+// reverse
+Vector operator~ ( const Vector &vec)
+{
+    VectorCoordinates coord = vec.getCoordinates();
+
+    return Vector( coord.x_0, coord.y_0, coord.x, coord.y, coord.z_0, coord.z);
+}
+
+
+Vector &Vector::operator/= ( double cf)
+{
+    assert( std::fabs( cf) >= EPSILON);
+
+    x = x_0 + (x - x_0) / cf;
+    y = y_0 + (y - y_0) / cf;
+    z = z_0 + (z - z_0) / cf;
+
+    return *this;
+}
+
+
+Vector &Vector::operator!= ( Vector &vec)
+{
+    assert( fabs( z) < EPSILON );
+    assert( fabs( z_0) < EPSILON );
+
+    double tmp_x_0 = this->x_0;
+    double tmp_y_0 = this->y_0;
+    this->move( 0, 0);
+    double tmp_x = -this->y;
+    this->y = this->x;
+    this->x = tmp_x;
+    this->move( tmp_x_0, tmp_y_0);
+
+    return *this;
 }

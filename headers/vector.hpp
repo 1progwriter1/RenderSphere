@@ -34,9 +34,8 @@ public:
     Vector &move( double new_x_0, double new_y_0, double new_z_0 = 0);
     void createEnding( VectorCoordinates *end_1, VectorCoordinates *end_2) const;
 
-    Vector &operator/ ( double cf);
-    Vector &operator! ();
-    Vector &operator~ ();
+    Vector &operator/= ( double cf);
+    Vector &operator!= ( Vector &vec);
     Vector operator= ( const Vector &vec) const;
 
     Vector reflectNormal( Vector &normal);
@@ -46,6 +45,9 @@ Vector operator+ ( const Vector &vec_1, const Vector &vec_2);
 Vector operator- ( const Vector &vec_1, const Vector &vec_2);
 double operator* ( const Vector &vec_1, const Vector &vec_2);
 Vector operator* ( const Vector &vec, double cf);
+Vector operator/ ( const Vector &vec, double cf);
+Vector operator! ( const Vector &vec);
+Vector operator~ ( const Vector &vec);
 
 double getAngle( Vector &vec_1, Vector &vec_2);
 double cosOfDifference( double cos_x, double cos_y);

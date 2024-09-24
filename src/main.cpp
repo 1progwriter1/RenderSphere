@@ -5,15 +5,21 @@
 #include "clock.hpp"
 #include "graphlib.hpp"
 #include "sphere.hpp"
-
 #include "../../MyLibraries/headers/systemdata.h"
-#include "vector.hpp"
 
-// добавить функторы
+
+// TODO: add more events
+// TODO: ~, ! shouldn't change value
+// TODO: move common necessary actions from onHover, ... to private actions
+// TODO: Do animations, move Animations to class Button
+// TODO: ...
+// добавить функторы - lambda function
+
 
 const unsigned int W_HEIGHT = 900;
 const unsigned int W_WIDTH = 1400;
 const unsigned int INIT_RADIUS = 200;
+
 
 int main( const int argc, const char *argv[])
 {
@@ -55,7 +61,7 @@ int main( const int argc, const char *argv[])
         window.clear( sf::Color::Black);
         window.drawPixels( sphere.getPixels());
 
-        manager.proceedButtons( &window, &event, &key, &sphere);
+        manager.proceedButtons( &window, &event, &key);
         manager.drawButtons( window);
 
         window.display();

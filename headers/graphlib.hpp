@@ -4,7 +4,6 @@
 #include "coor_sys.hpp"
 #include <SFML/Graphics.hpp>
 #include <cstddef>
-#include <vector>
 
 class GraphWindow
 {

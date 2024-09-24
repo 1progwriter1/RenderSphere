@@ -32,6 +32,27 @@ enum States
     Released_ = 3,
 };
 
+
+class Button;
+
+
+class Animation
+{
+    float transp_c_;
+    States animation_type_;
+
+public:
+    Animation( float init_transp_c, States init_anim_type)
+        :   transp_c_( init_transp_c), animation_type_( init_anim_type) {};
+    ~Animation() = default;
+
+    void animOnHover( Button &button, sf::RenderWindow &window);
+    void animOnClick( Button &button, sf::RenderWindow &window);
+    void animNormal( Button &button, sf::RenderWindow &window);
+    void animReleased( Button &button, sf::RenderWindow &window);
+};
+
+
 struct ButtonData
 {
     int pos_x;
@@ -42,6 +63,7 @@ struct ButtonData
 
 class Button : public AButton
 {
+protected:
     States state_;
     ButtonId id_;
 
@@ -54,9 +76,6 @@ class Button : public AButton
     ButtonData data_;
     sf::RectangleShape clearShape_;
 
-    float transp_cf_;
-    States animation_type_;
-
 public:
     Button( const ButtonData &init_data, ButtonId init_id, Sphere *sphere_ptr);
     ~Button();
@@ -65,9 +84,6 @@ public:
     sf::Sprite &getCurSprite();
     States getState() const;
     void setState( States new_state);
-
-    States getAnimation();
-    void setAnimation( States new_anim);
 
     bool isOnFocus( sf::Vector2i mouse_pos);
 
@@ -82,6 +98,8 @@ public:
     void draw( sf::RenderWindow &window);
 
     void setLightInd( size_t ind);
+
+    class Animation animation;
 
 private:
     void setSprites();
