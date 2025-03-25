@@ -1,9 +1,8 @@
-#  Sphere
+# 3D Sphere
 
 <center>
     <figure style="display: inline-block; margin: 0;">
         <img src="images/sphere.png" width=600>
-        <figcaption>Сфера</figcaption>
     </figure>
 </center>
 
