@@ -1,4 +1,4 @@
-# Render Sphere
+# 3D Sphere
 
 <figure align="center">
 <img src="images/sphere.png" width=600>
