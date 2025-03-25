@@ -206,7 +206,7 @@ Vector &Vector::operator/= ( double cf)
 }
 
 
-Vector &Vector::operator!= ( Vector &vec)
+Vector &Vector::operator!=( Vector &vec)
 {
     assert( fabs( z) < EPSILON );
     assert( fabs( z_0) < EPSILON );
